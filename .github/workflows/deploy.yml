@@ -71,7 +71,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.VPS_PORT || 22 }}
+          port: ${{ secrets.SSH_PORT || 22 }}
           source: dist/*
-          target: ${{ secrets.FRONT_DEPLOY_PATH }}
+          target: ${{ secrets.FRONT_PATH }}
           strip_components: 1
