@@ -56,8 +56,14 @@ jobs:
               exit 1
             fi
 
+
+
             mkdir -p "$FRONT_PATH"
             rm -rf "$FRONT_PATH"/*
+
+            cd "$FRONT_PATH"
+            # Create a simple index.html to serve as a placeholder until the files are uploaded
+            echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Only Escorts Intim</title></head><body><h1>Deploying...</h1></body></html>" > index.html
 
       - name: Upload static files
         uses: appleboy/scp-action@v0.1.7
