@@ -1,4 +1,5 @@
 import { apiGet } from "../lib/api.js";
+import { getAuthSession } from "../auth/session.js";
 
 type ApiNamedEntity = {
   id?: string;
@@ -29,19 +30,19 @@ async function fetchNamedEntityList(paths: string[]): Promise<string[]> {
 }
 
 export async function listGenderOptions(): Promise<string[]> {
+  const hasAccessToken = Boolean(getAuthSession()?.accessToken);
+
   return fetchNamedEntityList([
+    ...(hasAccessToken ? ["/user/gender"] : []),
     "/get-genders",
-    "/get-gender",
-    "/gender",
-    "/genders",
   ]);
 }
 
 export async function listCategoryOptions(): Promise<string[]> {
+  const hasAccessToken = Boolean(getAuthSession()?.accessToken);
+
   return fetchNamedEntityList([
+    ...(hasAccessToken ? ["/user/category"] : []),
     "/get-categories",
-    "/get-category",
-    "/category",
-    "/categories",
   ]);
 }
