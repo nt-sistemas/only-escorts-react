@@ -12,6 +12,12 @@ import { StoriesViewer } from "../components/stories";
 import type { StorySlide } from "../components/stories";
 import { WatermarkedImage } from "../components/ui/watermarked-image";
 import { listCategoryOptions, listGenderOptions } from "../services/lookups.js";
+import {
+  uploadProfileImages,
+  uploadProfileStories,
+  uploadProfileVideos,
+  uploadVerificationFiles,
+} from "../services/upload.js";
 
 const DEFAULT_GENDER_OPTIONS = ["Female", "Male", "Non-binary", "Trans"];
 const DEFAULT_CATEGORY_OPTIONS = ["VIP", "Premium", "Standard"];
@@ -115,6 +121,8 @@ export function EditProfile() {
   const [nextSlideId, setNextSlideId] = useState(2);
   const [genderOptions, setGenderOptions] = useState<string[]>([]);
   const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadNotice, setUploadNotice] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -161,13 +169,46 @@ export function EditProfile() {
     setGallery(gallery.filter((_, i) => i !== index));
   };
 
-  const addVideo = (file: File | null) => {
+  const uploadGalleryFiles = async (fileList: FileList | null) => {
+    if (!fileList || fileList.length === 0) {
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadNotice(null);
+
+    try {
+      const urls = await uploadProfileImages(Array.from(fileList));
+      if (urls.length > 0) {
+        setGallery((prev) => [...prev, ...urls]);
+      }
+      setUploadNotice(`${urls.length} image(s) uploaded successfully.`);
+    } catch {
+      setUploadNotice("Could not upload images. Make sure you are authenticated.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const addVideo = async (file: File | null) => {
     if (!file) {
       return;
     }
 
-    const url = URL.createObjectURL(file);
-    setVideos((prev) => [...prev, url]);
+    setIsUploading(true);
+    setUploadNotice(null);
+
+    try {
+      const urls = await uploadProfileVideos([file]);
+      if (urls.length > 0) {
+        setVideos((prev) => [...prev, ...urls]);
+      }
+      setUploadNotice(`${urls.length} video(s) uploaded successfully.`);
+    } catch {
+      setUploadNotice("Could not upload video. Make sure you are authenticated.");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const removeVideo = (index: number) => {
@@ -185,6 +226,40 @@ export function EditProfile() {
     setStorySlides((prev) => [...prev, slide]);
     setNextSlideId((n) => n + 1);
     setNewSlideUrl("");
+  };
+
+  const uploadStoryFiles = async (fileList: FileList | null) => {
+    if (!fileList || fileList.length === 0) {
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadNotice(null);
+
+    try {
+      const urls = await uploadProfileStories(Array.from(fileList));
+
+      if (urls.length > 0) {
+        setStorySlides((prev) => {
+          const startingId = nextSlideId;
+          const uploadedSlides = urls.map((url, index) => ({
+            id: startingId + index,
+            image: url,
+            duration: 5000,
+          }));
+
+          return [...prev, ...uploadedSlides];
+        });
+
+        setNextSlideId((current) => current + urls.length);
+      }
+
+      setUploadNotice(`${urls.length} story file(s) uploaded successfully.`);
+    } catch {
+      setUploadNotice("Could not upload stories. Make sure you are authenticated.");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const removeStorySlide = (id: number) => {
@@ -205,7 +280,7 @@ export function EditProfile() {
     );
   };
 
-  const handleVerificationFileChange = (
+  const handleVerificationFileChange = async (
     key: "document" | "selfieWithDocument",
     file: File | null,
   ) => {
@@ -219,6 +294,37 @@ export function EditProfile() {
       ...prev,
       [key]: previewUrl,
     }));
+
+    setIsUploading(true);
+    setUploadNotice(null);
+
+    try {
+      const payload =
+        key === "document"
+          ? { document: file }
+          : { selfieWithDocument: file };
+
+      const uploaded = await uploadVerificationFiles(payload);
+      const uploadedUrl =
+        key === "document"
+          ? uploaded.documentUrl
+          : uploaded.selfieWithDocumentUrl;
+
+      if (uploadedUrl) {
+        setVerificationPreviews((prev) => ({
+          ...prev,
+          [key]: uploadedUrl,
+        }));
+      }
+
+      setUploadNotice("Verification file uploaded successfully.");
+    } catch {
+      setUploadNotice(
+        "Could not upload verification file. Make sure you are authenticated.",
+      );
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const clearVerificationFile = (key: "document" | "selfieWithDocument") => {
@@ -281,6 +387,12 @@ export function EditProfile() {
             Save Changes
           </Button>
         </div>
+
+        {uploadNotice && (
+          <div className="mb-4 rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+            {uploadNotice}
+          </div>
+        )}
 
         <Tabs defaultValue="info" className="w-full">
           <TabsList className="mb-6 border border-border bg-card">
@@ -556,7 +668,7 @@ export function EditProfile() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="cursor-pointer rounded-lg border-2 border-dashed border-border p-8 text-center transition hover:border-primary">
+                <label className="block cursor-pointer rounded-lg border-2 border-dashed border-border p-8 text-center transition hover:border-primary">
                   <Upload className="w-12 h-12 mx-auto mb-4 text-neutral-500" />
                   <p className="text-muted-foreground mb-2">
                     Click to upload or drag your photos here
@@ -564,7 +676,17 @@ export function EditProfile() {
                   <p className="text-muted-foreground/80 text-sm">
                     PNG, JPG up to 10MB
                   </p>
-                </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="hidden"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      void uploadGalleryFiles(e.target.files)
+                    }
+                    disabled={isUploading}
+                  />
+                </label>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {gallery.map((photo, index) => (
@@ -623,8 +745,9 @@ export function EditProfile() {
                     accept="video/*"
                     className="hidden"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      addVideo(e.target.files?.[0] || null)
+                      void addVideo(e.target.files?.[0] || null)
                     }
+                    disabled={isUploading}
                   />
                 </label>
 
@@ -1017,13 +1140,23 @@ export function EditProfile() {
                     </h3>
 
                     {/* Upload area */}
-                    <div className="cursor-pointer rounded-lg border-2 border-dashed border-border p-6 text-center transition hover:border-primary">
+                    <label className="block cursor-pointer rounded-lg border-2 border-dashed border-border p-6 text-center transition hover:border-primary">
                       <Upload className="w-8 h-8 mx-auto mb-2 text-neutral-500" />
                       <p className="text-muted-foreground text-sm mb-1">
                         Click to upload or drag an image here
                       </p>
                       <p className="text-muted-foreground/80 text-xs">PNG, JPG up to 10MB</p>
-                    </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          void uploadStoryFiles(e.target.files)
+                        }
+                        disabled={isUploading}
+                      />
+                    </label>
 
                     <div className="flex items-center gap-2">
                       <div className="flex-1 h-px bg-border" />
