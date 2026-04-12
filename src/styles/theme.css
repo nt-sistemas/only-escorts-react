@@ -1,0 +1,323 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  --font-family-body: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-family-display: "Aclonica", "Open Sans", ui-sans-serif, sans-serif;
+  --background: #ffffff;
+  --foreground: #1f1720;
+  --card: #ffffff;
+  --card-foreground: #1f1720;
+  --popover: oklch(1 0 0);
+  --popover-foreground: #1f1720;
+  --primary: #7c223a;
+  --primary-foreground: #ffffff;
+  --secondary: oklch(0.95 0.0058 264.53);
+  --secondary-foreground: #1f1720;
+  --muted: #ececf0;
+  --muted-foreground: #5f6470;
+  --accent: #f4e7ec;
+  --accent-foreground: #52182a;
+  --destructive: #d4183d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.1);
+  --input: transparent;
+  --input-background: #f3f3f5;
+  --switch-background: #cbced4;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #7c223a;
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: #7c223a;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: #7c223a;
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: #7c223a;
+  --primary-foreground: #ffffff;
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: #cbd5e1;
+  --accent: #2a1820;
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: #b25b74;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: #7c223a;
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: #b25b74;
+}
+
+@theme inline {
+  --font-sans: var(--font-family-body);
+  --font-display: var(--font-family-display);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-family-body);
+  }
+
+  /**
+  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
+  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
+  */
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-family: var(--font-family-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-family: var(--font-family-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-family: var(--font-family-display);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h4 {
+    font-family: var(--font-family-display);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-family: var(--font-family-body);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-family: var(--font-family-body);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-family: var(--font-family-body);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+
+  textarea,
+  select,
+  p,
+  li,
+  small,
+  span,
+  a {
+    font-family: var(--font-family-body);
+  }
+
+  h5,
+  h6,
+  strong,
+  b,
+  .font-display,
+  .font-highlight {
+    font-family: var(--font-family-display);
+  }
+}
+
+/* Light-mode overrides for the current neutral utility palette used by the app. */
+.theme-light .bg-neutral-950 {
+  background-color: #f1f5f9;
+}
+
+.theme-light .bg-neutral-900 {
+  background-color: #ffffff;
+}
+
+.theme-light .bg-neutral-800 {
+  background-color: #f8fafc;
+}
+
+.theme-light .border-neutral-800,
+.theme-light .border-neutral-700 {
+  border-color: #dbe3ee;
+}
+
+.theme-light .text-white {
+  color: #111827;
+}
+
+.theme-light .text-neutral-500 {
+  color: #667085;
+}
+
+.theme-light .text-neutral-400 {
+  color: #475467;
+}
+
+.theme-light .text-neutral-300 {
+  color: #344054;
+}
+
+.theme-light .text-neutral-200 {
+  color: #1f2937;
+}
+
+.theme-light .hover\:bg-neutral-800:hover {
+  background-color: #eef2f7;
+}
+
+.theme-light .hover\:text-white:hover {
+  color: #111827;
+}
+
+.theme-light .placeholder\:text-neutral-500::placeholder {
+  color: #667085;
+}
+
+/* Keep contrast for pink action surfaces where white text is expected. */
+.theme-light .bg-pink-500.text-white,
+.theme-light .bg-pink-600.text-white,
+.theme-light .hover\:bg-pink-600.text-white:hover {
+  color: #ffffff;
+}
+
+/* Better light-surface contrast for semi-transparent dark overlays. */
+.theme-light .bg-neutral-900\/80 {
+  background-color: rgba(255, 255, 255, 0.92);
+}
+
+.theme-light .bg-black\/50 {
+  background-color: rgba(15, 23, 42, 0.35);
+}
+
+/* Global accent palette override: primary highlight color. */
+.text-pink-400,
+.hover\:text-pink-400:hover {
+  color: #7c223a;
+}
+
+.text-pink-500,
+.hover\:text-pink-500:hover {
+  color: #7c223a;
+}
+
+.bg-pink-500,
+.hover\:bg-pink-500:hover,
+.data-\[state\=active\]\:bg-pink-500[data-state="active"] {
+  background-color: #7c223a;
+}
+
+.bg-pink-600,
+.hover\:bg-pink-600:hover {
+  background-color: #641b2f;
+}
+
+.border-pink-500,
+.hover\:border-pink-500:hover {
+  border-color: #7c223a;
+}
+
+/* Keep supporting accent text legible on dark surfaces. */
+.dark .text-pink-400,
+.dark .hover\:text-pink-400:hover {
+  color: #d799aa;
+}
+
+.dark .text-neutral-400 {
+  color: #cbd5e1;
+}
+
+.dark .text-neutral-300 {
+  color: #e2e8f0;
+}
+
+.dark .text-neutral-200 {
+  color: #f8fafc;
+}
