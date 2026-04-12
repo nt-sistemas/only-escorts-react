@@ -45,14 +45,14 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.VPS_PORT || 22 }}
+          port: ${{ secrets.SSH_PORT || 22 }}
           script_stop: true
           script: |
             set -e
             FRONT_PATH="/var/www/only-escorts-intim/front"
 
             if [ -z "$FRONT_PATH" ]; then
-              echo "FRONT_DEPLOY_PATH secret is required."
+              echo "FRONT_PATH secret is required."
               exit 1
             fi
 
