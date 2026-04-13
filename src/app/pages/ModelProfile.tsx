@@ -209,9 +209,8 @@ export function ModelProfile() {
 
     return Array.from(
       new Set(
-        [model.image, ...model.gallery].filter(
-          (image): image is string =>
-            Boolean(image && image.trim().length > 0),
+        [model.image, ...model.gallery].filter((image): image is string =>
+          Boolean(image && image.trim().length > 0),
         ),
       ),
     );
