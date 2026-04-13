@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   AlertTriangle,
-  Ban,
   CheckCircle2,
   CircleDollarSign,
   Clock3,
@@ -13,7 +12,6 @@ import {
   TrendingUp,
   User,
   UserX,
-  Zap,
 } from "lucide-react";
 import {
   Card,
@@ -72,7 +70,8 @@ export function AdminDashboard() {
       const dashboardData = await getAdminDashboardData();
       setData(dashboardData);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Failed to load dashboard data";
+      const message =
+        err instanceof Error ? err.message : "Failed to load dashboard data";
       setError(message);
       console.error("Dashboard error:", err);
     } finally {
@@ -186,7 +185,9 @@ export function AdminDashboard() {
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center justify-between border-b border-border/70 pb-3">
-                <span className="text-sm text-muted-foreground">Total Users</span>
+                <span className="text-sm text-muted-foreground">
+                  Total Users
+                </span>
                 <span className="text-lg font-bold text-foreground">
                   {data.metrics.totalUsers}
                 </span>
@@ -283,7 +284,9 @@ export function AdminDashboard() {
                   {dashCard.trend && (
                     <Badge
                       variant={
-                        dashCard.trend.direction === "up" ? "default" : "destructive"
+                        dashCard.trend.direction === "up"
+                          ? "default"
+                          : "destructive"
                       }
                       className={
                         dashCard.trend.direction === "up"
