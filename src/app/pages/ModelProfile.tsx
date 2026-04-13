@@ -131,7 +131,7 @@ export function ModelProfile() {
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [id, startLoading, stopLoading]);
 
   const handleCreateTestimonial = async () => {
     if (!id) {

@@ -787,7 +787,9 @@ export function EditProfile() {
               <CardContent className="space-y-4">
                 <label
                   className={`relative block rounded-lg border-2 border-dashed border-border p-8 text-center transition hover:border-primary ${
-                    isUploading ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+                    isUploading
+                      ? "cursor-not-allowed opacity-70"
+                      : "cursor-pointer"
                   }`}
                 >
                   {isUploading ? (
@@ -796,7 +798,9 @@ export function EditProfile() {
                     <Upload className="w-12 h-12 mx-auto mb-4 text-neutral-500" />
                   )}
                   <p className="text-muted-foreground mb-2">
-                    {isUploading ? "Uploading…" : "Click to upload or drag your photos here"}
+                    {isUploading
+                      ? "Uploading…"
+                      : "Click to upload or drag your photos here"}
                   </p>
                   <p className="text-muted-foreground/80 text-sm">
                     PNG, JPG up to 10MB
@@ -869,7 +873,9 @@ export function EditProfile() {
               <CardContent className="space-y-4">
                 <label
                   className={`relative block rounded-lg border-2 border-dashed border-border p-8 text-center transition hover:border-primary ${
-                    isUploading ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+                    isUploading
+                      ? "cursor-not-allowed opacity-70"
+                      : "cursor-pointer"
                   }`}
                 >
                   {isUploading ? (
@@ -1378,7 +1384,9 @@ export function EditProfile() {
                     {/* Upload area */}
                     <label
                       className={`relative block rounded-lg border-2 border-dashed border-border p-6 text-center transition hover:border-primary ${
-                        isUploading ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+                        isUploading
+                          ? "cursor-not-allowed opacity-70"
+                          : "cursor-pointer"
                       }`}
                     >
                       {isUploading ? (
@@ -1387,7 +1395,9 @@ export function EditProfile() {
                         <Upload className="w-8 h-8 mx-auto mb-2 text-neutral-500" />
                       )}
                       <p className="text-muted-foreground text-sm mb-1">
-                        {isUploading ? "Uploading…" : "Click to upload or drag an image here"}
+                        {isUploading
+                          ? "Uploading…"
+                          : "Click to upload or drag an image here"}
                       </p>
                       <p className="text-muted-foreground/80 text-xs">
                         PNG, JPG up to 10MB

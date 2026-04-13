@@ -100,7 +100,7 @@ export function Models() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [startLoading, stopLoading]);
 
   const handleStoryClick = async (index: number) => {
     const selectedStory = stories[index];
