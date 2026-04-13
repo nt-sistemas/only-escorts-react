@@ -13,6 +13,7 @@ import { AdminBilling } from "./pages/admin/Billing.js";
 import { AdminPlans } from "./pages/admin/Plans.js";
 import { AdminCategories } from "./pages/admin/Categories.js";
 import { AdminGenders } from "./pages/admin/Genders.js";
+import { AdminRouteError } from "./pages/admin/AdminRouteError.js";
 import { hasRole } from "./auth/session.js";
 
 function RequireUserOrAdminRole() {
@@ -70,6 +71,7 @@ export const router = createBrowserRouter([
   {
     path: "/admin",
     Component: RequireAdminRole,
+    errorElement: <AdminRouteError />,
     children: [
       {
         Component: AdminLayout,
