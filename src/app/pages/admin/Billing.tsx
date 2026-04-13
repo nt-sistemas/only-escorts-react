@@ -1,8 +1,22 @@
 import { useEffect, useState } from "react";
-import { Search, Download, DollarSign, TrendingUp, Calendar, Check, Clock, X } from "lucide-react";
+import {
+  Search,
+  Download,
+  DollarSign,
+  TrendingUp,
+  Calendar,
+  Check,
+  Clock,
+  X,
+} from "lucide-react";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
 import {
   Table,
@@ -12,7 +26,13 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 import { getAdminBillingData } from "../../services/admin";
 
 const BILLING_STATS = [
@@ -147,7 +167,9 @@ export function AdminBilling() {
         if (!cancelled) {
           setBillingStats(BILLING_STATS);
           setTransactions(MOCK_TRANSACTIONS);
-          setBillingNotice("Could not load billing from API. Showing local data.");
+          setBillingNotice(
+            "Could not load billing from API. Showing local data.",
+          );
         }
       }
     };
@@ -189,7 +211,10 @@ export function AdminBilling() {
     const { icon: Icon, className } = config[status as keyof typeof config];
 
     return (
-      <Badge variant="outline" className={`${className} flex items-center gap-1 w-fit`}>
+      <Badge
+        variant="outline"
+        className={`${className} flex items-center gap-1 w-fit`}
+      >
         <Icon className="w-3 h-3" />
         {status}
       </Badge>
@@ -212,7 +237,7 @@ export function AdminBilling() {
         </div>
         <Button className="bg-pink-500 hover:bg-pink-600">
           <Download className="w-4 h-4 mr-2" />
-            Export Report
+          Export Report
         </Button>
       </div>
 
@@ -221,7 +246,10 @@ export function AdminBilling() {
         {billingStats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.title} className="bg-neutral-900 border-neutral-800">
+            <Card
+              key={stat.title}
+              className="bg-neutral-900 border-neutral-800"
+            >
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <Icon className="w-8 h-8 text-pink-500" />
@@ -230,7 +258,9 @@ export function AdminBilling() {
                   </Badge>
                 </div>
                 <p className="text-neutral-400 text-sm mb-1">{stat.title}</p>
-                <p className="font-highlight text-2xl font-bold text-white tracking-tight">{stat.value}</p>
+                <p className="font-highlight text-2xl font-bold text-white tracking-tight">
+                  {stat.value}
+                </p>
               </CardContent>
             </Card>
           );

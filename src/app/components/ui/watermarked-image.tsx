@@ -18,9 +18,7 @@ export function WatermarkedImage({
   return (
     <div className={cn("relative overflow-hidden", containerClassName)}>
       <img alt={alt} className={className} draggable={false} {...props} />
-      <div
-        className="pointer-events-none absolute bottom-2 right-2 rounded-md border border-white/20 bg-black/60 p-2 backdrop-blur-[1px]"
-      >
+      <div className="pointer-events-none absolute bottom-2 right-2 rounded-md border border-white/20 bg-black/60 p-2 backdrop-blur-[1px]">
         <img
           src={OnlyLogo}
           alt=""

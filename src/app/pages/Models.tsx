@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Search, MapPin, Heart } from "lucide-react";
 import { Input } from "../components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
 import { Badge } from "../components/ui/badge";
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
@@ -22,122 +28,6 @@ const DEFAULT_GENDER_OPTIONS = ["Female", "Male", "Non-binary", "Trans"];
 const DEFAULT_CATEGORY_OPTIONS = ["VIP", "Premium", "Standard"];
 
 const MOCK_STORIES: Story[] = [];
-
-const MOCK_MODELS = [
-  {
-    id: 1,
-    name: "Isabela Santos",
-    age: 25,
-    city: "São Paulo",
-    category: "VIP",
-    gender: "Female",
-    image: "https://images.unsplash.com/photo-1649589244330-09ca58e4fa64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHBvcnRyYWl0fGVufDF8fHx8MTc3Mjk0MDk5Nnww&ixlib=rb-4.1.0&q=80&w=1080",
-    price: "€ 500,00/h",
-    verified: true,
-    videos: ["https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"],
-    testimonials: [
-      {
-        id: 1,
-        author: "Carlos M.",
-        comment: "Excellent service and very professional.",
-        rating: 5,
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Rafael Costa",
-    age: 28,
-    city: "Rio de Janeiro",
-    category: "Premium",
-    gender: "Male",
-    image: "https://images.unsplash.com/photo-1554765345-6ad6a5417cde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBtYW4lMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzI5NTM5OTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    price: "€ 400,00/h",
-    verified: true,
-    videos: ["https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"],
-    testimonials: [
-      {
-        id: 1,
-        author: "André",
-        comment: "Punctual and respectful. Great experience.",
-        rating: 4,
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: "Mariana Oliveira",
-    age: 23,
-    city: "Brasília",
-    category: "VIP",
-    gender: "Female",
-    image: "https://images.unsplash.com/photo-1638717366457-dbcaf6b1afbc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwd29tYW4lMjBtb2RlbHxlbnwxfHx8fDE3NzI5ODU3NDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    price: "€ 600,00/h",
-    verified: true,
-    videos: [],
-    testimonials: [
-      {
-        id: 1,
-        author: "Roberto S.",
-        comment: "Five-star attention and communication.",
-        rating: 5,
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: "Lucas Fernandes",
-    age: 30,
-    city: "São Paulo",
-    category: "Premium",
-    gender: "Male",
-    image: "https://images.unsplash.com/photo-1735777192155-dec95124a585?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoYW5kc29tZSUyMG1hbiUyMG1vZGVsfGVufDF8fHx8MTc3Mjk4NTc0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
-    price: "€ 450,00/h",
-    verified: false,
-    videos: [],
-    testimonials: [],
-  },
-  {
-    id: 5,
-    name: "Juliana Rocha",
-    age: 27,
-    city: "Curitiba",
-    category: "Standard",
-    gender: "Female",
-    image: "https://images.unsplash.com/photo-1633443362894-227325b61ddf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnbGFtb3JvdXMlMjB3b21hbiUyMHBvcnRyYWl0fGVufDF8fHx8MTc3MjkwODYzMnww&ixlib=rb-4.1.0&q=80&w=1080",
-    price: "€ 300,00/h",
-    verified: true,
-    videos: ["https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"],
-    testimonials: [
-      {
-        id: 1,
-        author: "Gustavo",
-        comment: "Friendly and very attentive.",
-        rating: 4,
-      },
-    ],
-  },
-  {
-    id: 6,
-    name: "Bruno Silva",
-    age: 26,
-    city: "Porto Alegre",
-    category: "Standard",
-    gender: "Male",
-    image: "https://images.unsplash.com/flagged/photo-1594170954639-ff95b015b546?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdHlsaXNoJTIwbWFuJTIwcG9ydHJhaXR8ZW58MXx8fHwxNzcyOTg1NzQ2fDA&ixlib=rb-4.1.0&q=80&w=1080",
-    price: "€ 350,00/h",
-    verified: true,
-    videos: [],
-    testimonials: [
-      {
-        id: 1,
-        author: "Pedro",
-        comment: "Very discreet and reliable.",
-        rating: 5,
-      },
-    ],
-  },
-];
 
 export function Models() {
   const navigate = useNavigate();
@@ -166,11 +56,11 @@ export function Models() {
       try {
         const [apiModels, apiCategories, apiGenders, apiStories] =
           await Promise.all([
-          listModels(),
-          listModelCategories(),
-          listModelGenders(),
-          listModelStories(),
-        ]);
+            listModels(),
+            listModelCategories(),
+            listModelGenders(),
+            listModelStories(),
+          ]);
         if (cancelled) {
           return;
         }
@@ -237,7 +127,7 @@ export function Models() {
 
   const handleStoryViewed = (storyId: string) => {
     setStories((prev) =>
-      prev.map((s) => (s.id === storyId ? { ...s, viewed: true } : s))
+      prev.map((s) => (s.id === storyId ? { ...s, viewed: true } : s)),
     );
   };
 
@@ -245,23 +135,16 @@ export function Models() {
     setActiveStoryIndex(null);
   };
 
-  const getModelGallery = (model: CatalogModel) => {
-    const fallbackImage = model.image;
-    const gallery = [
-      fallbackImage,
-      ...(model.gallery ?? []),
-    ];
-
-    return Array.from(new Set(gallery)).slice(0, 4);
-  };
-
   const filteredModels = models.filter((model) => {
-    const matchesSearch = model.name.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = model.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
     const matchesCategory =
       categoryFilter === "all" || model.category === categoryFilter;
-    const matchesGender = genderFilter === "all" || model.gender === genderFilter;
+    const matchesGender =
+      genderFilter === "all" || model.gender === genderFilter;
     const matchesCity = cityFilter === "all" || model.city === cityFilter;
-    
+
     return matchesSearch && matchesCategory && matchesGender && matchesCity;
   });
 
@@ -314,7 +197,9 @@ export function Models() {
               <SelectContent className="bg-neutral-800 border-neutral-700">
                 <SelectItem value="all">All Categories</SelectItem>
                 {categoryOptions.map((category) => (
-                  <SelectItem key={category} value={category}>{category}</SelectItem>
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -326,7 +211,9 @@ export function Models() {
               <SelectContent className="bg-neutral-800 border-neutral-700">
                 <SelectItem value="all">All Genders</SelectItem>
                 {genderOptions.map((gender) => (
-                  <SelectItem key={gender} value={gender}>{gender}</SelectItem>
+                  <SelectItem key={gender} value={gender}>
+                    {gender}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -351,10 +238,13 @@ export function Models() {
       {/* Results Count */}
       <div className="mb-6">
         <p className="text-neutral-400">
-          {filteredModels.length} {filteredModels.length === 1 ? "model found" : "models found"}
+          {filteredModels.length}{" "}
+          {filteredModels.length === 1 ? "model found" : "models found"}
         </p>
         {isLoadingModels && (
-          <p className="text-neutral-500 text-sm mt-1">Loading models from API...</p>
+          <p className="text-neutral-500 text-sm mt-1">
+            Loading models from API...
+          </p>
         )}
         {modelsNotice && (
           <p className="text-neutral-500 text-sm mt-1">{modelsNotice}</p>
@@ -370,63 +260,63 @@ export function Models() {
               className="bg-neutral-900 border-neutral-800 overflow-hidden hover:border-pink-500 transition group cursor-pointer"
               onClick={() => navigate(`/model/${model.id}`)}
             >
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <WatermarkedImage
-                    src={model.image}
-                    alt={model.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                    containerClassName="w-full h-full"
-                  />
-                  {model.verified && (
-                    <Badge className="absolute top-3 left-3 bg-pink-500 text-white border-0">
-                      Verified
+              <div className="relative aspect-[3/4] overflow-hidden">
+                <WatermarkedImage
+                  src={model.image}
+                  alt={model.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                  containerClassName="w-full h-full"
+                />
+                {model.verified && (
+                  <Badge className="absolute top-3 left-3 bg-pink-500 text-white border-0">
+                    Verified
+                  </Badge>
+                )}
+                <Badge className="absolute top-3 right-3 bg-neutral-900/80 text-white border-0">
+                  {model.category}
+                </Badge>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="absolute bottom-3 right-3 bg-neutral-900/80 hover:bg-pink-500 text-white"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                >
+                  <Heart className="w-4 h-4" />
+                </Button>
+              </div>
+              <CardContent className="p-4">
+                <h3 className="text-white font-semibold text-lg mb-1">
+                  {model.name}
+                  {typeof model.age === "number" ? `, ${model.age}` : ""}
+                </h3>
+                {model.city && (
+                  <div className="flex items-center text-neutral-400 text-sm mb-2">
+                    <MapPin className="w-4 h-4 mr-1" />
+                    {model.city}
+                  </div>
+                )}
+                <div className="flex items-center justify-between">
+                  {model.price ? (
+                    <span className="font-highlight text-pink-500 font-bold tracking-tight">
+                      {model.price}
+                    </span>
+                  ) : (
+                    <span className="text-neutral-500">Price unavailable</span>
+                  )}
+                  {model.gender && (
+                    <Badge
+                      variant="outline"
+                      className="border-neutral-700 text-neutral-300"
+                    >
+                      {model.gender}
                     </Badge>
                   )}
-                  <Badge className="absolute top-3 right-3 bg-neutral-900/80 text-white border-0">
-                    {model.category}
-                  </Badge>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    className="absolute bottom-3 right-3 bg-neutral-900/80 hover:bg-pink-500 text-white"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Heart className="w-4 h-4" />
-                  </Button>
                 </div>
-                <CardContent className="p-4">
-                  <h3 className="text-white font-semibold text-lg mb-1">
-                    {model.name}
-                    {typeof model.age === "number" ? `, ${model.age}` : ""}
-                  </h3>
-                  {model.city && (
-                    <div className="flex items-center text-neutral-400 text-sm mb-2">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      {model.city}
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between">
-                    {model.price ? (
-                      <span className="font-highlight text-pink-500 font-bold tracking-tight">
-                        {model.price}
-                      </span>
-                    ) : (
-                      <span className="text-neutral-500">Price unavailable</span>
-                    )}
-                    {model.gender && (
-                      <Badge
-                        variant="outline"
-                        className="border-neutral-700 text-neutral-300"
-                      >
-                        {model.gender}
-                      </Badge>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+              </CardContent>
+            </Card>
           );
         })}
       </div>

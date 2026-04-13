@@ -11,7 +11,10 @@ export function StoriesReel({ stories, onStoryClick }: StoriesReelProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: "left" | "right") => {
-    scrollRef.current?.scrollBy({ left: dir === "left" ? -240 : 240, behavior: "smooth" });
+    scrollRef.current?.scrollBy({
+      left: dir === "left" ? -240 : 240,
+      behavior: "smooth",
+    });
   };
 
   return (

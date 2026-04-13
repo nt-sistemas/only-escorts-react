@@ -35,7 +35,10 @@ export function AdminLayout() {
       {/* Header */}
       <header className="border-b border-primary/80 bg-primary text-primary-foreground shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/admin" className="font-display text-2xl font-bold text-primary-foreground">
+          <Link
+            to="/admin"
+            className="font-display text-2xl font-bold text-primary-foreground"
+          >
             Only Escorts Intim Admin
           </Link>
 
@@ -59,7 +62,7 @@ export function AdminLayout() {
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
-                
+
                 return (
                   <Link
                     key={item.path}
@@ -68,7 +71,7 @@ export function AdminLayout() {
                       "flex items-center gap-3 rounded-xl px-4 py-3 transition-colors",
                       isActive
                         ? "bg-primary text-primary-foreground shadow-sm"
-                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                        : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
                     )}
                   >
                     <Icon className="w-5 h-5" />

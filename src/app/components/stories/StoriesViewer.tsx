@@ -25,9 +25,15 @@ export function StoriesViewer({
   const slideIndexRef = useRef(currentSlideIndex);
   const storiesRef = useRef(stories);
 
-  useEffect(() => { storyIndexRef.current = currentStoryIndex; }, [currentStoryIndex]);
-  useEffect(() => { slideIndexRef.current = currentSlideIndex; }, [currentSlideIndex]);
-  useEffect(() => { storiesRef.current = stories; }, [stories]);
+  useEffect(() => {
+    storyIndexRef.current = currentStoryIndex;
+  }, [currentStoryIndex]);
+  useEffect(() => {
+    slideIndexRef.current = currentSlideIndex;
+  }, [currentSlideIndex]);
+  useEffect(() => {
+    storiesRef.current = stories;
+  }, [stories]);
 
   const currentStory = stories[currentStoryIndex];
   const currentSlide = currentStory?.slides[currentSlideIndex];
@@ -63,7 +69,9 @@ export function StoriesViewer({
 
   // Keep refs updated
   const goToNextRef = useRef(goToNext);
-  useEffect(() => { goToNextRef.current = goToNext; }, [goToNext]);
+  useEffect(() => {
+    goToNextRef.current = goToNext;
+  }, [goToNext]);
 
   // Mark current story as viewed when it opens
   useEffect(() => {
@@ -75,8 +83,9 @@ export function StoriesViewer({
     if (paused || !currentSlide) return;
     const duration = currentSlide.duration ?? 5000;
 
-    setProgress(0);
     let prog = 0;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setProgress(0);
     const tick = 50;
     const step = (tick / duration) * 100;
 
@@ -108,7 +117,9 @@ export function StoriesViewer({
   // Prevent body scroll while viewer is open
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, []);
 
   if (!currentStory || !currentSlide) return null;
@@ -151,8 +162,8 @@ export function StoriesViewer({
                     i < currentSlideIndex
                       ? "100%"
                       : i === currentSlideIndex
-                      ? `${progress}%`
-                      : "0%",
+                        ? `${progress}%`
+                        : "0%",
                   transition: i === currentSlideIndex ? "none" : undefined,
                 }}
               />
@@ -184,10 +195,7 @@ export function StoriesViewer({
         {/* Interaction zones */}
         <div className="absolute inset-0 flex z-20">
           {/* Previous */}
-          <div
-            className="w-1/3 h-full cursor-pointer"
-            onClick={goToPrev}
-          />
+          <div className="w-1/3 h-full cursor-pointer" onClick={goToPrev} />
 
           {/* Pause on hold */}
           <div
@@ -198,10 +206,7 @@ export function StoriesViewer({
           />
 
           {/* Next */}
-          <div
-            className="w-1/3 h-full cursor-pointer"
-            onClick={goToNext}
-          />
+          <div className="w-1/3 h-full cursor-pointer" onClick={goToNext} />
         </div>
 
         {/* Desktop previous / next buttons */}

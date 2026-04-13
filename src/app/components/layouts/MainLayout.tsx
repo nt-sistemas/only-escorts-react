@@ -22,20 +22,29 @@ export function MainLayout() {
           <Link to="/" className="text-2xl font-bold text-primary-foreground">
             <img src={OnlyLogo} alt="Only Escorts Intim" className="h-8" />
           </Link>
-          
+
           <nav className="hidden md:flex items-center gap-6">
             {!isAuthenticated && (
-              <Link to="/models" className="text-primary-foreground/85 hover:text-primary-foreground transition-colors">
+              <Link
+                to="/models"
+                className="text-primary-foreground/85 hover:text-primary-foreground transition-colors"
+              >
                 Models
               </Link>
             )}
             {!isAuthenticated && (
-              <Link to="/plans" className="text-primary-foreground/85 hover:text-primary-foreground transition-colors">
+              <Link
+                to="/plans"
+                className="text-primary-foreground/85 hover:text-primary-foreground transition-colors"
+              >
                 Plans
               </Link>
             )}
             {isUser && (
-              <Link to="/edit-profile" className="text-primary-foreground/85 hover:text-primary-foreground transition-colors">
+              <Link
+                to="/edit-profile"
+                className="text-primary-foreground/85 hover:text-primary-foreground transition-colors"
+              >
                 My Profile
               </Link>
             )}
@@ -78,7 +87,9 @@ export function MainLayout() {
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-pink-500 font-bold mb-4">Only Escorts Intim</h3>
+              <h3 className="text-pink-500 font-bold mb-4">
+                Only Escorts Intim
+              </h3>
               <p className="text-muted-foreground text-sm">
                 The best luxury companion platform.
               </p>
@@ -87,26 +98,75 @@ export function MainLayout() {
               <h4 className="text-foreground font-semibold mb-4">Links</h4>
               <ul className="space-y-2 text-sm">
                 {!isAuthenticated && (
-                  <li><Link to="/models" className="text-muted-foreground hover:text-pink-500 transition-colors">Models</Link></li>
+                  <li>
+                    <Link
+                      to="/models"
+                      className="text-muted-foreground hover:text-pink-500 transition-colors"
+                    >
+                      Models
+                    </Link>
+                  </li>
                 )}
                 {!isAuthenticated && (
-                  <li><Link to="/plans" className="text-muted-foreground hover:text-pink-500 transition-colors">Plans</Link></li>
+                  <li>
+                    <Link
+                      to="/plans"
+                      className="text-muted-foreground hover:text-pink-500 transition-colors"
+                    >
+                      Plans
+                    </Link>
+                  </li>
                 )}
-                <li><Link to="/register" className="text-muted-foreground hover:text-pink-500 transition-colors">Sign Up</Link></li>
+                <li>
+                  <Link
+                    to="/register"
+                    className="text-muted-foreground hover:text-pink-500 transition-colors"
+                  >
+                    Sign Up
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="text-foreground font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="text-muted-foreground hover:text-pink-500 transition-colors">FAQ</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-pink-500 transition-colors">Contact</a></li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-muted-foreground hover:text-pink-500 transition-colors"
+                  >
+                    FAQ
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-muted-foreground hover:text-pink-500 transition-colors"
+                  >
+                    Contact
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="text-foreground font-semibold mb-4">Legal</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="text-muted-foreground hover:text-pink-500 transition-colors">Terms of Use</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-pink-500 transition-colors">Privacy</a></li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-muted-foreground hover:text-pink-500 transition-colors"
+                  >
+                    Terms of Use
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-muted-foreground hover:text-pink-500 transition-colors"
+                  >
+                    Privacy
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

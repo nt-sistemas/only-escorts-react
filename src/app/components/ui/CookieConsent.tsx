@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "./button.js";
 
 const CONSENT_COOKIE_NAME = "oei_cookie_consent";
@@ -25,12 +25,10 @@ function setCookie(name: string, value: string): void {
 }
 
 export function CookieConsent() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
+  const [isVisible, setIsVisible] = useState(() => {
     const currentConsent = getCookie(CONSENT_COOKIE_NAME);
-    setIsVisible(currentConsent !== "accepted" && currentConsent !== "rejected");
-  }, []);
+    return currentConsent !== "accepted" && currentConsent !== "rejected";
+  });
 
   const handleChoice = (choice: ConsentValue) => {
     setCookie(CONSENT_COOKIE_NAME, choice);

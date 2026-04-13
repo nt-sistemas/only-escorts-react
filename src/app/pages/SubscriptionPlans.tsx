@@ -1,7 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { Check, Sparkles } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card.js";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card.js";
 import { Badge } from "../components/ui/badge.js";
 import { Button } from "../components/ui/button.js";
 import { listPublicPlans, type PublicPlan } from "../services/plans.js";
@@ -149,16 +155,22 @@ export function SubscriptionPlans() {
           <Sparkles className="w-3.5 h-3.5" />
           Subscriptions
         </Badge>
-        <h1 className="text-3xl md:text-5xl text-foreground mb-3">Choose the right plan for your profile</h1>
+        <h1 className="text-3xl md:text-5xl text-foreground mb-3">
+          Choose the right plan for your profile
+        </h1>
         <p className="text-muted-foreground text-base md:text-lg">
           Compare features and pick the visibility level that fits your goals.
         </p>
-        {notice && <p className="mt-3 text-sm text-muted-foreground">{notice}</p>}
+        {notice && (
+          <p className="mt-3 text-sm text-muted-foreground">{notice}</p>
+        )}
       </section>
 
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {isLoading && (
-          <p className="col-span-full text-center text-sm text-muted-foreground">Loading plans...</p>
+          <p className="col-span-full text-center text-sm text-muted-foreground">
+            Loading plans...
+          </p>
         )}
 
         {displayPlans.map((plan) => {
@@ -172,7 +184,9 @@ export function SubscriptionPlans() {
               )}
 
               <CardHeader>
-                <CardTitle className="text-2xl text-foreground">{plan.name}</CardTitle>
+                <CardTitle className="text-2xl text-foreground">
+                  {plan.name}
+                </CardTitle>
                 <CardDescription className="text-muted-foreground">
                   {plan.description || "Subscription plan"}
                 </CardDescription>
@@ -180,10 +194,15 @@ export function SubscriptionPlans() {
 
               <CardContent className="space-y-6">
                 <div>
-                  <p className="text-3xl font-semibold text-foreground">{priceFormatter(plan.price)}</p>
+                  <p className="text-3xl font-semibold text-foreground">
+                    {priceFormatter(plan.price)}
+                  </p>
                   <p className="text-sm text-muted-foreground">per month</p>
                   {plan.freeTrialDays > 0 && (
-                    <Badge variant="outline" className="mt-3 border-primary/20 text-primary">
+                    <Badge
+                      variant="outline"
+                      className="mt-3 border-primary/20 text-primary"
+                    >
                       {plan.freeTrialDays} free trial days
                     </Badge>
                   )}
@@ -192,7 +211,10 @@ export function SubscriptionPlans() {
                 {plan.features.length > 0 ? (
                   <ul className="space-y-3">
                     {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2 text-sm text-foreground">
+                      <li
+                        key={feature}
+                        className="flex items-start gap-2 text-sm text-foreground"
+                      >
                         <Check className="w-4 h-4 text-primary mt-0.5" />
                         <span>{feature}</span>
                       </li>
@@ -209,7 +231,9 @@ export function SubscriptionPlans() {
                   variant={plan.highlighted ? "default" : "outline"}
                   onClick={() => handleSubscribe(plan)}
                 >
-                  {plan.freeTrialDays > 0 ? "Start free trial" : `Subscribe to ${plan.name}`}
+                  {plan.freeTrialDays > 0
+                    ? "Start free trial"
+                    : `Subscribe to ${plan.name}`}
                 </Button>
               </CardContent>
             </Card>

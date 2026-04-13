@@ -1,12 +1,46 @@
 import { useEffect, useState } from "react";
-import { Upload, X, Plus, Save, Play, ChevronLeft, ChevronRight, ImagePlus, Clock, Eye, EyeOff, Camera, FileImage, Trash2, AlertTriangle, Star } from "lucide-react";
+import {
+  Upload,
+  X,
+  Plus,
+  Save,
+  Play,
+  ChevronLeft,
+  ChevronRight,
+  ImagePlus,
+  Clock,
+  Eye,
+  EyeOff,
+  Camera,
+  FileImage,
+  Trash2,
+  AlertTriangle,
+  Star,
+} from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
 import { Badge } from "../components/ui/badge";
 import { StoriesViewer } from "../components/stories";
 import type { StorySlide } from "../components/stories";
@@ -91,13 +125,6 @@ export function EditProfile() {
     "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
   ]);
 
-  const [verificationFiles, setVerificationFiles] = useState<{
-    document: File | null;
-    selfieWithDocument: File | null;
-  }>({
-    document: null,
-    selfieWithDocument: null,
-  });
   const [verificationPreviews, setVerificationPreviews] = useState<{
     document: string;
     selfieWithDocument: string;
@@ -184,7 +211,9 @@ export function EditProfile() {
       }
       setUploadNotice(`${urls.length} image(s) uploaded successfully.`);
     } catch {
-      setUploadNotice("Could not upload images. Make sure you are authenticated.");
+      setUploadNotice(
+        "Could not upload images. Make sure you are authenticated.",
+      );
     } finally {
       setIsUploading(false);
     }
@@ -205,7 +234,9 @@ export function EditProfile() {
       }
       setUploadNotice(`${urls.length} video(s) uploaded successfully.`);
     } catch {
-      setUploadNotice("Could not upload video. Make sure you are authenticated.");
+      setUploadNotice(
+        "Could not upload video. Make sure you are authenticated.",
+      );
     } finally {
       setIsUploading(false);
     }
@@ -256,7 +287,9 @@ export function EditProfile() {
 
       setUploadNotice(`${urls.length} story file(s) uploaded successfully.`);
     } catch {
-      setUploadNotice("Could not upload stories. Make sure you are authenticated.");
+      setUploadNotice(
+        "Could not upload stories. Make sure you are authenticated.",
+      );
     } finally {
       setIsUploading(false);
     }
@@ -276,7 +309,7 @@ export function EditProfile() {
 
   const updateSlideDuration = (id: StorySlide["id"], duration: number) => {
     setStorySlides((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, duration } : s))
+      prev.map((s) => (s.id === id ? { ...s, duration } : s)),
     );
   };
 
@@ -289,7 +322,6 @@ export function EditProfile() {
     }
 
     const previewUrl = URL.createObjectURL(file);
-    setVerificationFiles((prev) => ({ ...prev, [key]: file }));
     setVerificationPreviews((prev) => ({
       ...prev,
       [key]: previewUrl,
@@ -300,9 +332,7 @@ export function EditProfile() {
 
     try {
       const payload =
-        key === "document"
-          ? { document: file }
-          : { selfieWithDocument: file };
+        key === "document" ? { document: file } : { selfieWithDocument: file };
 
       const uploaded = await uploadVerificationFiles(payload);
       const uploadedUrl =
@@ -367,7 +397,9 @@ export function EditProfile() {
     );
   };
 
-  const activeTestimonials = testimonials.filter((testimonial) => !testimonial.deletedAt);
+  const activeTestimonials = testimonials.filter(
+    (testimonial) => !testimonial.deletedAt,
+  );
   const hiddenTestimonialsCount = activeTestimonials.filter(
     (testimonial) => !testimonial.isVisible,
   ).length;
@@ -377,12 +409,17 @@ export function EditProfile() {
       <div className="max-w-4xl mx-auto text-foreground">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="mb-2 font-display text-3xl text-foreground">Edit Profile</h1>
+            <h1 className="mb-2 font-display text-3xl text-foreground">
+              Edit Profile
+            </h1>
             <p className="text-muted-foreground">
               Manage your information and photo gallery
             </p>
           </div>
-          <Button onClick={handleSave} className="font-highlight bg-primary text-primary-foreground hover:bg-primary/90">
+          <Button
+            onClick={handleSave}
+            className="font-highlight bg-primary text-primary-foreground hover:bg-primary/90"
+          >
             <Save className="w-4 h-4 mr-2" />
             Save Changes
           </Button>
@@ -396,28 +433,49 @@ export function EditProfile() {
 
         <Tabs defaultValue="info" className="w-full">
           <TabsList className="mb-6 border border-border bg-card">
-            <TabsTrigger value="info" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger
+              value="info"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
               Information
             </TabsTrigger>
-            <TabsTrigger value="services" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger
+              value="services"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
               Services
             </TabsTrigger>
-            <TabsTrigger value="gallery" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger
+              value="gallery"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
               Gallery
             </TabsTrigger>
-            <TabsTrigger value="videos" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger
+              value="videos"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
               Videos
             </TabsTrigger>
-            <TabsTrigger value="verification" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger
+              value="verification"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
               Verification
             </TabsTrigger>
-            <TabsTrigger value="testimonials" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger
+              value="testimonials"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
               <span className="mr-2">Testimonials</span>
               <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-pink-500 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white">
                 {hiddenTestimonialsCount}
               </span>
             </TabsTrigger>
-            <TabsTrigger value="stories" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsTrigger
+              value="stories"
+              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+            >
               Stories
             </TabsTrigger>
           </TabsList>
@@ -426,7 +484,9 @@ export function EditProfile() {
           <TabsContent value="info">
             <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="font-display text-foreground">Personal Information</CardTitle>
+                <CardTitle className="font-display text-foreground">
+                  Personal Information
+                </CardTitle>
                 <CardDescription className="text-muted-foreground">
                   Update your profile details
                 </CardDescription>
@@ -456,7 +516,10 @@ export function EditProfile() {
                       type="email"
                       value={profileData.email}
                       onChange={(e) =>
-                        setProfileData({ ...profileData, email: e.target.value })
+                        setProfileData({
+                          ...profileData,
+                          email: e.target.value,
+                        })
                       }
                       className="border-border bg-input-background text-foreground"
                     />
@@ -471,7 +534,10 @@ export function EditProfile() {
                       type="tel"
                       value={profileData.phone}
                       onChange={(e) =>
-                        setProfileData({ ...profileData, phone: e.target.value })
+                        setProfileData({
+                          ...profileData,
+                          phone: e.target.value,
+                        })
                       }
                       className="border-border bg-input-background text-foreground"
                     />
@@ -521,11 +587,16 @@ export function EditProfile() {
                       </SelectTrigger>
                       <SelectContent className="border-border bg-popover text-popover-foreground">
                         {genderOptions.map((gender) => (
-                          <SelectItem key={gender} value={gender}>{gender}</SelectItem>
+                          <SelectItem key={gender} value={gender}>
+                            {gender}
+                          </SelectItem>
                         ))}
-                        {profileData.gender && !genderOptions.includes(profileData.gender) && (
-                          <SelectItem value={profileData.gender}>{profileData.gender}</SelectItem>
-                        )}
+                        {profileData.gender &&
+                          !genderOptions.includes(profileData.gender) && (
+                            <SelectItem value={profileData.gender}>
+                              {profileData.gender}
+                            </SelectItem>
+                          )}
                       </SelectContent>
                     </Select>
                   </div>
@@ -545,17 +616,25 @@ export function EditProfile() {
                       </SelectTrigger>
                       <SelectContent className="border-border bg-popover text-popover-foreground">
                         {categoryOptions.map((category) => (
-                          <SelectItem key={category} value={category}>{category}</SelectItem>
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
                         ))}
-                        {profileData.category && !categoryOptions.includes(profileData.category) && (
-                          <SelectItem value={profileData.category}>{profileData.category}</SelectItem>
-                        )}
+                        {profileData.category &&
+                          !categoryOptions.includes(profileData.category) && (
+                            <SelectItem value={profileData.category}>
+                              {profileData.category}
+                            </SelectItem>
+                          )}
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="price" className="font-highlight text-foreground">
+                    <Label
+                      htmlFor="price"
+                      className="font-highlight text-foreground"
+                    >
                       Price per hour (€)
                     </Label>
                     <Input
@@ -563,7 +642,10 @@ export function EditProfile() {
                       type="number"
                       value={profileData.price}
                       onChange={(e) =>
-                        setProfileData({ ...profileData, price: e.target.value })
+                        setProfileData({
+                          ...profileData,
+                          price: e.target.value,
+                        })
                       }
                       className="border-border bg-input-background text-foreground"
                     />
@@ -578,7 +660,10 @@ export function EditProfile() {
                     id="availability"
                     value={profileData.availability}
                     onChange={(e) =>
-                      setProfileData({ ...profileData, availability: e.target.value })
+                      setProfileData({
+                        ...profileData,
+                        availability: e.target.value,
+                      })
                     }
                     className="border-border bg-input-background text-foreground placeholder:text-muted-foreground"
                     placeholder="Ex: Monday to Friday, 10 AM to 8 PM"
@@ -593,7 +678,10 @@ export function EditProfile() {
                     id="description"
                     value={profileData.description}
                     onChange={(e) =>
-                      setProfileData({ ...profileData, description: e.target.value })
+                      setProfileData({
+                        ...profileData,
+                        description: e.target.value,
+                      })
                     }
                     className="min-h-32 border-border bg-input-background text-foreground placeholder:text-muted-foreground"
                     placeholder="Tell us a bit about yourself..."
@@ -607,7 +695,9 @@ export function EditProfile() {
           <TabsContent value="services">
             <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="font-display text-foreground">Offered Services</CardTitle>
+                <CardTitle className="font-display text-foreground">
+                  Offered Services
+                </CardTitle>
                 <CardDescription className="text-muted-foreground">
                   Manage the services you offer
                 </CardDescription>
@@ -662,7 +752,9 @@ export function EditProfile() {
           <TabsContent value="gallery">
             <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="font-display text-foreground">Photo Gallery</CardTitle>
+                <CardTitle className="font-display text-foreground">
+                  Photo Gallery
+                </CardTitle>
                 <CardDescription className="text-muted-foreground">
                   Add or remove photos from your profile
                 </CardDescription>
@@ -730,7 +822,9 @@ export function EditProfile() {
           <TabsContent value="videos">
             <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="font-display text-foreground">Videos</CardTitle>
+                <CardTitle className="font-display text-foreground">
+                  Videos
+                </CardTitle>
                 <CardDescription className="text-muted-foreground">
                   Add or remove videos from your profile
                 </CardDescription>
@@ -738,8 +832,12 @@ export function EditProfile() {
               <CardContent className="space-y-4">
                 <label className="block cursor-pointer rounded-lg border-2 border-dashed border-border p-8 text-center transition hover:border-primary">
                   <Upload className="mx-auto mb-4 h-12 w-12 text-neutral-500" />
-                  <p className="mb-2 text-muted-foreground">Click to upload videos</p>
-                  <p className="text-sm text-muted-foreground/80">MP4, WebM up to 50MB</p>
+                  <p className="mb-2 text-muted-foreground">
+                    Click to upload videos
+                  </p>
+                  <p className="text-sm text-muted-foreground/80">
+                    MP4, WebM up to 50MB
+                  </p>
                   <input
                     type="file"
                     accept="video/*"
@@ -753,8 +851,16 @@ export function EditProfile() {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {videos.map((video, index) => (
-                    <div key={`${video}-${index}`} className="relative overflow-hidden rounded-lg border border-border bg-black">
-                      <video src={video} controls className="h-56 w-full object-cover" preload="metadata" />
+                    <div
+                      key={`${video}-${index}`}
+                      className="relative overflow-hidden rounded-lg border border-border bg-black"
+                    >
+                      <video
+                        src={video}
+                        controls
+                        className="h-56 w-full object-cover"
+                        preload="metadata"
+                      />
                       <div className="absolute right-2 top-2">
                         <Button
                           type="button"
@@ -776,7 +882,9 @@ export function EditProfile() {
                 </div>
 
                 {videos.length === 0 && (
-                  <div className="py-8 text-center text-muted-foreground">No videos added yet</div>
+                  <div className="py-8 text-center text-muted-foreground">
+                    No videos added yet
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -786,21 +894,33 @@ export function EditProfile() {
           <TabsContent value="verification">
             <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="font-display text-foreground">Identity Verification</CardTitle>
+                <CardTitle className="font-display text-foreground">
+                  Identity Verification
+                </CardTitle>
                 <CardDescription className="text-muted-foreground">
-                  Send your verification documents. Only user and admin can access this area.
+                  Send your verification documents. Only user and admin can
+                  access this area.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-3 rounded-xl border border-border p-4">
                     <div>
-                      <h3 className="font-medium text-foreground">Document photo</h3>
-                      <p className="text-sm text-muted-foreground">Upload your ID card, passport, or driver license.</p>
+                      <h3 className="font-medium text-foreground">
+                        Document photo
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Upload your ID card, passport, or driver license.
+                      </p>
                     </div>
 
                     <div className="flex gap-2">
-                      <Button type="button" variant="outline" className="flex-1" asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="flex-1"
+                        asChild
+                      >
                         <label className="cursor-pointer">
                           <Camera className="w-4 h-4 mr-2" />
                           Use camera
@@ -809,14 +929,24 @@ export function EditProfile() {
                             accept="image/*"
                             capture="environment"
                             className="hidden"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                              handleVerificationFileChange("document", e.target.files?.[0] || null)
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>,
+                            ) =>
+                              handleVerificationFileChange(
+                                "document",
+                                e.target.files?.[0] || null,
+                              )
                             }
                           />
                         </label>
                       </Button>
 
-                      <Button type="button" variant="outline" className="flex-1" asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="flex-1"
+                        asChild
+                      >
                         <label className="cursor-pointer">
                           <FileImage className="w-4 h-4 mr-2" />
                           Upload file
@@ -824,8 +954,13 @@ export function EditProfile() {
                             type="file"
                             accept="image/*"
                             className="hidden"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                              handleVerificationFileChange("document", e.target.files?.[0] || null)
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>,
+                            ) =>
+                              handleVerificationFileChange(
+                                "document",
+                                e.target.files?.[0] || null,
+                              )
                             }
                           />
                         </label>
@@ -854,12 +989,21 @@ export function EditProfile() {
 
                   <div className="space-y-3 rounded-xl border border-border p-4">
                     <div>
-                      <h3 className="font-medium text-foreground">Selfie with document</h3>
-                      <p className="text-sm text-muted-foreground">Take a photo holding the same document near your face.</p>
+                      <h3 className="font-medium text-foreground">
+                        Selfie with document
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Take a photo holding the same document near your face.
+                      </p>
                     </div>
 
                     <div className="flex gap-2">
-                      <Button type="button" variant="outline" className="flex-1" asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="flex-1"
+                        asChild
+                      >
                         <label className="cursor-pointer">
                           <Camera className="w-4 h-4 mr-2" />
                           Use camera
@@ -868,14 +1012,24 @@ export function EditProfile() {
                             accept="image/*"
                             capture="user"
                             className="hidden"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                              handleVerificationFileChange("selfieWithDocument", e.target.files?.[0] || null)
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>,
+                            ) =>
+                              handleVerificationFileChange(
+                                "selfieWithDocument",
+                                e.target.files?.[0] || null,
+                              )
                             }
                           />
                         </label>
                       </Button>
 
-                      <Button type="button" variant="outline" className="flex-1" asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="flex-1"
+                        asChild
+                      >
                         <label className="cursor-pointer">
                           <FileImage className="w-4 h-4 mr-2" />
                           Upload file
@@ -883,8 +1037,13 @@ export function EditProfile() {
                             type="file"
                             accept="image/*"
                             className="hidden"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                              handleVerificationFileChange("selfieWithDocument", e.target.files?.[0] || null)
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>,
+                            ) =>
+                              handleVerificationFileChange(
+                                "selfieWithDocument",
+                                e.target.files?.[0] || null,
+                              )
                             }
                           />
                         </label>
@@ -903,7 +1062,9 @@ export function EditProfile() {
                           size="sm"
                           variant="destructive"
                           className="absolute top-2 right-2"
-                          onClick={() => clearVerificationFile("selfieWithDocument")}
+                          onClick={() =>
+                            clearVerificationFile("selfieWithDocument")
+                          }
                         >
                           <X className="w-4 h-4" />
                         </Button>
@@ -913,7 +1074,8 @@ export function EditProfile() {
                 </div>
 
                 <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm text-primary">
-                  After selecting both images, click Save Changes to continue the verification process.
+                  After selecting both images, click Save Changes to continue
+                  the verification process.
                 </div>
               </CardContent>
             </Card>
@@ -923,9 +1085,12 @@ export function EditProfile() {
           <TabsContent value="testimonials">
             <Card className="border-border bg-card">
               <CardHeader>
-                <CardTitle className="font-display text-foreground">Testimonials Management</CardTitle>
+                <CardTitle className="font-display text-foreground">
+                  Testimonials Management
+                </CardTitle>
                 <CardDescription className="text-muted-foreground">
-                  Control visibility, report abusive reviews, or delete testimonials. Name, rating, and text are read-only.
+                  Control visibility, report abusive reviews, or delete
+                  testimonials. Name, rating, and text are read-only.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -944,21 +1109,34 @@ export function EditProfile() {
                             {testimonial.commenterEmail || "No email"}
                           </p>
                           <p className="mt-1 text-xs text-muted-foreground">
-                            {new Date(testimonial.createdAt).toLocaleDateString("en-GB")}
+                            {new Date(testimonial.createdAt).toLocaleDateString(
+                              "en-GB",
+                            )}
                           </p>
                         </div>
 
                         <div className="flex items-center gap-1">
-                          {Array.from({ length: testimonial.stars }).map((_, index) => (
-                            <Star key={index} className="h-4 w-4 fill-yellow-500 text-yellow-500" />
-                          ))}
+                          {Array.from({ length: testimonial.stars }).map(
+                            (_, index) => (
+                              <Star
+                                key={index}
+                                className="h-4 w-4 fill-yellow-500 text-yellow-500"
+                              />
+                            ),
+                          )}
                         </div>
                       </div>
 
-                      <p className="mb-3 text-sm text-foreground">{testimonial.content}</p>
+                      <p className="mb-3 text-sm text-foreground">
+                        {testimonial.content}
+                      </p>
 
                       <div className="mb-3 flex flex-wrap gap-2">
-                        <Badge variant={testimonial.isVisible ? "default" : "outline"}>
+                        <Badge
+                          variant={
+                            testimonial.isVisible ? "default" : "outline"
+                          }
+                        >
                           {testimonial.isVisible ? "Visible" : "Hidden"}
                         </Badge>
                         {testimonial.isAbusive && (
@@ -970,7 +1148,9 @@ export function EditProfile() {
                         <Button
                           type="button"
                           variant="outline"
-                          onClick={() => toggleTestimonialVisibility(testimonial.id)}
+                          onClick={() =>
+                            toggleTestimonialVisibility(testimonial.id)
+                          }
                           className="border-border"
                         >
                           {testimonial.isVisible ? (
@@ -1025,9 +1205,12 @@ export function EditProfile() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="font-display text-foreground">My Stories</CardTitle>
+                      <CardTitle className="font-display text-foreground">
+                        My Stories
+                      </CardTitle>
                       <CardDescription className="text-muted-foreground">
-                        Add slides to your story — they appear at the top of the home page
+                        Add slides to your story — they appear at the top of the
+                        home page
                       </CardDescription>
                     </div>
                     {storySlides.length > 0 && (
@@ -1128,7 +1311,9 @@ export function EditProfile() {
                   ) : (
                     <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
                       <Play className="w-10 h-10 mb-3 opacity-40" />
-                      <p className="text-sm">No slides yet. Add your first one below.</p>
+                      <p className="text-sm">
+                        No slides yet. Add your first one below.
+                      </p>
                     </div>
                   )}
 
@@ -1145,7 +1330,9 @@ export function EditProfile() {
                       <p className="text-muted-foreground text-sm mb-1">
                         Click to upload or drag an image here
                       </p>
-                      <p className="text-muted-foreground/80 text-xs">PNG, JPG up to 10MB</p>
+                      <p className="text-muted-foreground/80 text-xs">
+                        PNG, JPG up to 10MB
+                      </p>
                       <input
                         type="file"
                         accept="image/*"
@@ -1160,23 +1347,31 @@ export function EditProfile() {
 
                     <div className="flex items-center gap-2">
                       <div className="flex-1 h-px bg-border" />
-                      <span className="text-xs text-muted-foreground">or paste a URL</span>
+                      <span className="text-xs text-muted-foreground">
+                        or paste a URL
+                      </span>
                       <div className="flex-1 h-px bg-border" />
                     </div>
 
                     <div className="flex gap-3">
                       <div className="flex-1 space-y-1">
-                        <Label className="text-muted-foreground text-xs">Image URL</Label>
+                        <Label className="text-muted-foreground text-xs">
+                          Image URL
+                        </Label>
                         <Input
                           value={newSlideUrl}
                           onChange={(e) => setNewSlideUrl(e.target.value)}
-                          onKeyDown={(e) => e.key === "Enter" && addStorySlide()}
+                          onKeyDown={(e) =>
+                            e.key === "Enter" && addStorySlide()
+                          }
                           className="border-border bg-input-background text-foreground placeholder:text-muted-foreground"
                           placeholder="https://example.com/image.jpg"
                         />
                       </div>
                       <div className="w-36 space-y-1">
-                        <Label className="text-muted-foreground text-xs">Duration</Label>
+                        <Label className="text-muted-foreground text-xs">
+                          Duration
+                        </Label>
                         <Select
                           value={newSlideDuration}
                           onValueChange={setNewSlideDuration}
@@ -1204,12 +1399,15 @@ export function EditProfile() {
                             className="w-full h-full object-cover"
                             containerClassName="w-full h-full"
                             onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = "none";
+                              (e.target as HTMLImageElement).style.display =
+                                "none";
                             }}
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs text-muted-foreground truncate">{newSlideUrl}</p>
+                          <p className="text-xs text-muted-foreground truncate">
+                            {newSlideUrl}
+                          </p>
                           <p className="mt-1 text-xs text-muted-foreground/80">
                             Duration: {Number(newSlideDuration) / 1000}s
                           </p>
@@ -1229,7 +1427,8 @@ export function EditProfile() {
 
                   {/* Tip */}
                   <p className="text-center text-xs text-muted-foreground">
-                    Stories appear for 24 hours. Use vertical images (9:16) for best results.
+                    Stories appear for 24 hours. Use vertical images (9:16) for
+                    best results.
                   </p>
                 </CardContent>
               </Card>

@@ -15,14 +15,6 @@ import { AdminCategories } from "./pages/admin/Categories.js";
 import { AdminGenders } from "./pages/admin/Genders.js";
 import { hasRole } from "./auth/session.js";
 
-function RequireUserRole() {
-  if (!hasRole("user")) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return <Outlet />;
-}
-
 function RequireUserOrAdminRole() {
   if (!hasRole("user") && !hasRole("admin")) {
     return <Navigate to="/login" replace />;

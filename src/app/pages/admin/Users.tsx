@@ -2,7 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { Search, Plus, Pencil, Trash2 } from "lucide-react";
 import { Input } from "../../components/ui/input.js";
 import { Button } from "../../components/ui/button.js";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card.js";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card.js";
 import { Badge } from "../../components/ui/badge.js";
 import {
   Table,
@@ -90,7 +95,6 @@ export function AdminUsers() {
   useEffect(() => {
     fetchUsers({ showLoading: true });
     fetchPlans();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filteredUsers = useMemo(() => {
@@ -101,7 +105,8 @@ export function AdminUsers() {
         user.name.toLowerCase().includes(query) ||
         user.email.toLowerCase().includes(query);
       const matchesRole = roleFilter === "all" || user.role === roleFilter;
-      const matchesStatus = statusFilter === "all" || user.status === statusFilter;
+      const matchesStatus =
+        statusFilter === "all" || user.status === statusFilter;
 
       return matchesSearch && matchesRole && matchesStatus;
     });
@@ -189,7 +194,10 @@ export function AdminUsers() {
     return (
       <Badge
         variant="outline"
-        className={variants[status as keyof typeof variants] || "border-neutral-700 text-neutral-300"}
+        className={
+          variants[status as keyof typeof variants] ||
+          "border-neutral-700 text-neutral-300"
+        }
       >
         {status}
       </Badge>
@@ -200,8 +208,12 @@ export function AdminUsers() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-white mb-2">User Management</h1>
-        <p className="text-neutral-400">Create and manage users from endpoint /admin/user</p>
-        {usersNotice && <p className="mt-2 text-sm text-neutral-500">{usersNotice}</p>}
+        <p className="text-neutral-400">
+          Create and manage users from endpoint /admin/user
+        </p>
+        {usersNotice && (
+          <p className="mt-2 text-sm text-neutral-500">{usersNotice}</p>
+        )}
       </div>
 
       <Card className="bg-neutral-900 border-neutral-800">
@@ -211,7 +223,10 @@ export function AdminUsers() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-6 gap-3">
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 md:grid-cols-6 gap-3"
+          >
             <Input
               placeholder="Name"
               value={form.name}
@@ -230,7 +245,9 @@ export function AdminUsers() {
               className="md:col-span-2 bg-neutral-800 border-neutral-700 text-white"
             />
             <Input
-              placeholder={editingUserId ? "New password (optional)" : "Password"}
+              placeholder={
+                editingUserId ? "New password (optional)" : "Password"
+              }
               type="password"
               value={form.password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -241,7 +258,9 @@ export function AdminUsers() {
 
             <Select
               value={form.role}
-              onValueChange={(value: string) => setForm((prev) => ({ ...prev, role: value }))}
+              onValueChange={(value: string) =>
+                setForm((prev) => ({ ...prev, role: value }))
+              }
             >
               <SelectTrigger className="md:col-span-2 bg-neutral-800 border-neutral-700 text-white">
                 <SelectValue placeholder="Role" />
@@ -254,7 +273,9 @@ export function AdminUsers() {
 
             <Select
               value={form.status}
-              onValueChange={(value: string) => setForm((prev) => ({ ...prev, status: value }))}
+              onValueChange={(value: string) =>
+                setForm((prev) => ({ ...prev, status: value }))
+              }
             >
               <SelectTrigger className="md:col-span-2 bg-neutral-800 border-neutral-700 text-white">
                 <SelectValue placeholder="Status" />
@@ -272,7 +293,10 @@ export function AdminUsers() {
             <Select
               value={form.planId || "none"}
               onValueChange={(value: string) =>
-                setForm((prev) => ({ ...prev, planId: value === "none" ? "" : value }))
+                setForm((prev) => ({
+                  ...prev,
+                  planId: value === "none" ? "" : value,
+                }))
               }
             >
               <SelectTrigger className="md:col-span-2 bg-neutral-800 border-neutral-700 text-white">
@@ -285,19 +309,35 @@ export function AdminUsers() {
                     {plan.name}
                   </SelectItem>
                 ))}
-                {form.planId && !plans.some((plan) => plan.id === form.planId) && (
-                  <SelectItem value={form.planId}>Current ({form.planId})</SelectItem>
-                )}
+                {form.planId &&
+                  !plans.some((plan) => plan.id === form.planId) && (
+                    <SelectItem value={form.planId}>
+                      Current ({form.planId})
+                    </SelectItem>
+                  )}
               </SelectContent>
             </Select>
 
             <div className="md:col-span-6 flex gap-2">
-              <Button type="submit" disabled={isSubmitting} className="w-full bg-pink-500 hover:bg-pink-600">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-pink-500 hover:bg-pink-600"
+              >
                 <Plus className="w-4 h-4 mr-2" />
-                {isSubmitting ? "Saving..." : editingUserId ? "Update User" : "Create User"}
+                {isSubmitting
+                  ? "Saving..."
+                  : editingUserId
+                    ? "Update User"
+                    : "Create User"}
               </Button>
               {editingUserId && (
-                <Button type="button" variant="outline" className="border-neutral-700 text-white" onClick={resetForm}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="border-neutral-700 text-white"
+                  onClick={resetForm}
+                >
                   Cancel
                 </Button>
               )}
@@ -315,7 +355,9 @@ export function AdminUsers() {
                 type="text"
                 placeholder="Search by name or email..."
                 value={search}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setSearch(e.target.value)
+                }
                 className="pl-10 bg-neutral-800 border-neutral-700 text-white placeholder:text-neutral-500"
               />
             </div>
@@ -349,7 +391,9 @@ export function AdminUsers() {
         </CardHeader>
         <CardContent>
           {isLoadingUsers && (
-            <p className="text-sm text-neutral-500 mb-3">Loading users from API...</p>
+            <p className="text-sm text-neutral-500 mb-3">
+              Loading users from API...
+            </p>
           )}
 
           <div className="rounded-lg border border-neutral-800 overflow-hidden">
@@ -362,23 +406,39 @@ export function AdminUsers() {
                   <TableHead className="text-neutral-300">Status</TableHead>
                   <TableHead className="text-neutral-300">Plan ID</TableHead>
                   <TableHead className="text-neutral-300">Created</TableHead>
-                  <TableHead className="text-neutral-300 text-right">Actions</TableHead>
+                  <TableHead className="text-neutral-300 text-right">
+                    Actions
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredUsers.map((user) => (
-                  <TableRow key={user.id} className="border-neutral-800 hover:bg-neutral-800/50">
-                    <TableCell className="font-medium text-white">{user.name}</TableCell>
-                    <TableCell className="text-neutral-400">{user.email}</TableCell>
+                  <TableRow
+                    key={user.id}
+                    className="border-neutral-800 hover:bg-neutral-800/50"
+                  >
+                    <TableCell className="font-medium text-white">
+                      {user.name}
+                    </TableCell>
+                    <TableCell className="text-neutral-400">
+                      {user.email}
+                    </TableCell>
                     <TableCell>
-                      <Badge variant="outline" className="border-neutral-700 text-neutral-300">
+                      <Badge
+                        variant="outline"
+                        className="border-neutral-700 text-neutral-300"
+                      >
                         {user.role}
                       </Badge>
                     </TableCell>
                     <TableCell>{getStatusBadge(user.status)}</TableCell>
-                    <TableCell className="text-neutral-400">{user.planId || "-"}</TableCell>
                     <TableCell className="text-neutral-400">
-                      {user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-GB") : "-"}
+                      {user.planId || "-"}
+                    </TableCell>
+                    <TableCell className="text-neutral-400">
+                      {user.createdAt
+                        ? new Date(user.createdAt).toLocaleDateString("en-GB")
+                        : "-"}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="inline-flex gap-2">
@@ -390,7 +450,11 @@ export function AdminUsers() {
                         >
                           <Pencil className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="destructive" onClick={() => handleDelete(user.id)}>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDelete(user.id)}
+                        >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -403,7 +467,9 @@ export function AdminUsers() {
 
           {!isLoadingUsers && filteredUsers.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-neutral-400">No users found with the selected filters.</p>
+              <p className="text-neutral-400">
+                No users found with the selected filters.
+              </p>
             </div>
           )}
         </CardContent>

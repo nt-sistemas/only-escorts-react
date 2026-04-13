@@ -12,7 +12,11 @@ export function ThemeSelector() {
 
   return (
     <div className="fixed right-4 top-4 z-50 rounded-full border border-border/80 bg-background/88 p-1 shadow-lg shadow-black/10 backdrop-blur supports-[backdrop-filter]:bg-background/72">
-      <div className="flex items-center gap-1" role="tablist" aria-label="Theme selector">
+      <div
+        className="flex items-center gap-1"
+        role="tablist"
+        aria-label="Theme selector"
+      >
         {options.map((option) => {
           const Icon = option.icon;
           const isActive = theme === option.value;

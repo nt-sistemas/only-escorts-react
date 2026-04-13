@@ -1,16 +1,36 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { MapPin, Phone, Mail, Star, Shield, Clock, Heart, Share2, MessageCircle, Video } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Star,
+  Shield,
+  Clock,
+  Heart,
+  Share2,
+  MessageCircle,
+  Video,
+} from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
+import { Avatar, AvatarFallback } from "../components/ui/avatar";
 import { WatermarkedImage } from "../components/ui/watermarked-image";
 import { Textarea } from "../components/ui/textarea";
 import { Input } from "../components/ui/input";
 import { getAuthSession } from "../auth/session";
-import { createModelTestimonial, getModelProfileById, type ProfileModelData } from "../services/modelProfile";
+import {
+  createModelTestimonial,
+  getModelProfileById,
+  type ProfileModelData,
+} from "../services/modelProfile";
 
 export function ModelProfile() {
   const { id } = useParams();
@@ -20,11 +40,15 @@ export function ModelProfile() {
   const [profileNotice, setProfileNotice] = useState<string | null>(null);
   const session = getAuthSession();
   const [testimonialName, setTestimonialName] = useState("");
-  const [testimonialEmail, setTestimonialEmail] = useState(session?.email ?? "");
+  const [testimonialEmail, setTestimonialEmail] = useState(
+    session?.email ?? "",
+  );
   const [newRating, setNewRating] = useState(5);
   const [newComment, setNewComment] = useState("");
   const [isSubmittingTestimonial, setIsSubmittingTestimonial] = useState(false);
-  const [testimonialNotice, setTestimonialNotice] = useState<string | null>(null);
+  const [testimonialNotice, setTestimonialNotice] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     if (!id) {
@@ -53,8 +77,11 @@ export function ModelProfile() {
           image: apiProfile.image,
           verified: Boolean(apiProfile.verified),
           rating: typeof apiProfile.rating === "number" ? apiProfile.rating : 0,
-          reviews: typeof apiProfile.reviews === "number" ? apiProfile.reviews : 0,
-          services: Array.isArray(apiProfile.services) ? apiProfile.services : [],
+          reviews:
+            typeof apiProfile.reviews === "number" ? apiProfile.reviews : 0,
+          services: Array.isArray(apiProfile.services)
+            ? apiProfile.services
+            : [],
           languages: Array.isArray(apiProfile.languages)
             ? apiProfile.languages
             : [],
@@ -63,14 +90,18 @@ export function ModelProfile() {
           testimonials: Array.isArray(apiProfile.testimonials)
             ? apiProfile.testimonials
             : [],
-          ...(typeof apiProfile.age === "number" ? { age: apiProfile.age } : {}),
+          ...(typeof apiProfile.age === "number"
+            ? { age: apiProfile.age }
+            : {}),
           ...(apiProfile.city ? { city: apiProfile.city } : {}),
           ...(apiProfile.category ? { category: apiProfile.category } : {}),
           ...(apiProfile.gender ? { gender: apiProfile.gender } : {}),
           ...(apiProfile.price ? { price: apiProfile.price } : {}),
           ...(apiProfile.phone ? { phone: apiProfile.phone } : {}),
           ...(apiProfile.email ? { email: apiProfile.email } : {}),
-          ...(apiProfile.description ? { description: apiProfile.description } : {}),
+          ...(apiProfile.description
+            ? { description: apiProfile.description }
+            : {}),
           ...(apiProfile.availability
             ? { availability: apiProfile.availability }
             : {}),
@@ -140,8 +171,10 @@ export function ModelProfile() {
         const nextTestimonials = [created, ...prev.testimonials];
         const nextReviews = nextTestimonials.length;
         const nextRating =
-          nextTestimonials.reduce((sum, testimonial) => sum + testimonial.rating, 0) /
-          nextReviews;
+          nextTestimonials.reduce(
+            (sum, testimonial) => sum + testimonial.rating,
+            0,
+          ) / nextReviews;
 
         return {
           ...prev,
@@ -218,7 +251,10 @@ export function ModelProfile() {
           {/* Gallery */}
           <div className="grid grid-cols-3 gap-4">
             {model.gallery.map((img, index) => (
-              <div key={index} className="aspect-square rounded-lg overflow-hidden">
+              <div
+                key={index}
+                className="aspect-square rounded-lg overflow-hidden"
+              >
                 <WatermarkedImage
                   src={img}
                   alt={`Gallery ${index + 1}`}
@@ -233,16 +269,28 @@ export function ModelProfile() {
           {/* Tabs */}
           <Tabs defaultValue="about" className="w-full">
             <TabsList className="bg-neutral-900 border border-neutral-800">
-              <TabsTrigger value="about" className="data-[state=active]:bg-pink-500">
+              <TabsTrigger
+                value="about"
+                className="data-[state=active]:bg-pink-500"
+              >
                 About
               </TabsTrigger>
-              <TabsTrigger value="services" className="data-[state=active]:bg-pink-500">
+              <TabsTrigger
+                value="services"
+                className="data-[state=active]:bg-pink-500"
+              >
                 Services
               </TabsTrigger>
-              <TabsTrigger value="videos" className="data-[state=active]:bg-pink-500">
+              <TabsTrigger
+                value="videos"
+                className="data-[state=active]:bg-pink-500"
+              >
                 Videos
               </TabsTrigger>
-              <TabsTrigger value="reviews" className="data-[state=active]:bg-pink-500">
+              <TabsTrigger
+                value="reviews"
+                className="data-[state=active]:bg-pink-500"
+              >
                 Reviews ({model.reviews})
               </TabsTrigger>
             </TabsList>
@@ -250,7 +298,9 @@ export function ModelProfile() {
             <TabsContent value="about" className="mt-6">
               <Card className="bg-neutral-900 border-neutral-800">
                 <CardContent className="p-6">
-                  <h3 className="text-white font-semibold text-lg mb-4">About Me</h3>
+                  <h3 className="text-white font-semibold text-lg mb-4">
+                    About Me
+                  </h3>
                   {model.description && (
                     <p className="text-neutral-300 leading-relaxed mb-6">
                       {model.description}
@@ -260,7 +310,9 @@ export function ModelProfile() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {model.availability && (
                       <div>
-                        <h4 className="text-white font-semibold mb-2">Availability</h4>
+                        <h4 className="text-white font-semibold mb-2">
+                          Availability
+                        </h4>
                         <div className="flex items-center text-neutral-300">
                           <Clock className="w-4 h-4 mr-2 text-pink-500" />
                           {model.availability}
@@ -270,7 +322,9 @@ export function ModelProfile() {
 
                     {model.languages.length > 0 && (
                       <div>
-                        <h4 className="text-white font-semibold mb-2">Languages</h4>
+                        <h4 className="text-white font-semibold mb-2">
+                          Languages
+                        </h4>
                         <div className="flex flex-wrap gap-2">
                           {model.languages.map((lang) => (
                             <Badge
@@ -327,7 +381,10 @@ export function ModelProfile() {
                   {model.videos.length > 0 ? (
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       {model.videos.map((videoUrl, index) => (
-                        <div key={`${videoUrl}-${index}`} className="overflow-hidden rounded-lg border border-neutral-800 bg-black">
+                        <div
+                          key={`${videoUrl}-${index}`}
+                          className="overflow-hidden rounded-lg border border-neutral-800 bg-black"
+                        >
                           <video
                             src={videoUrl}
                             controls
@@ -349,10 +406,14 @@ export function ModelProfile() {
             <TabsContent value="reviews" className="mt-6">
               <Card className="bg-neutral-900 border-neutral-800">
                 <CardContent className="p-6">
-                  <h3 className="text-white font-semibold text-lg mb-4">Reviews</h3>
+                  <h3 className="text-white font-semibold text-lg mb-4">
+                    Reviews
+                  </h3>
 
                   <div className="mb-6 rounded-lg border border-neutral-800 bg-neutral-850 p-4">
-                    <h4 className="mb-2 text-sm font-semibold text-white">Leave a testimonial</h4>
+                    <h4 className="mb-2 text-sm font-semibold text-white">
+                      Leave a testimonial
+                    </h4>
 
                     <div className="mb-3 grid grid-cols-1 gap-2 md:grid-cols-2">
                       <Input
@@ -389,7 +450,9 @@ export function ModelProfile() {
                           >
                             <Star
                               className={`h-5 w-5 ${
-                                active ? "fill-yellow-500 text-yellow-500" : "text-neutral-600"
+                                active
+                                  ? "fill-yellow-500 text-yellow-500"
+                                  : "text-neutral-600"
                               }`}
                             />
                           </button>
@@ -412,11 +475,15 @@ export function ModelProfile() {
                       disabled={isSubmittingTestimonial}
                       className="bg-pink-500 hover:bg-pink-600"
                     >
-                      {isSubmittingTestimonial ? "Submitting..." : "Submit testimonial"}
+                      {isSubmittingTestimonial
+                        ? "Submitting..."
+                        : "Submit testimonial"}
                     </Button>
 
                     {testimonialNotice && (
-                      <p className="mt-2 text-xs text-neutral-400">{testimonialNotice}</p>
+                      <p className="mt-2 text-xs text-neutral-400">
+                        {testimonialNotice}
+                      </p>
                     )}
                   </div>
 
@@ -443,15 +510,19 @@ export function ModelProfile() {
                             </div>
                           </div>
                           <div className="flex items-center gap-1">
-                            {Array.from({ length: testimonial.rating }).map((_, i) => (
-                              <Star
-                                key={i}
-                                className="w-4 h-4 fill-yellow-500 text-yellow-500"
-                              />
-                            ))}
+                            {Array.from({ length: testimonial.rating }).map(
+                              (_, i) => (
+                                <Star
+                                  key={i}
+                                  className="w-4 h-4 fill-yellow-500 text-yellow-500"
+                                />
+                              ),
+                            )}
                           </div>
                         </div>
-                        <p className="text-neutral-300">{testimonial.comment}</p>
+                        <p className="text-neutral-300">
+                          {testimonial.comment}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -482,9 +553,13 @@ export function ModelProfile() {
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
                         <Star className="w-4 h-4 fill-yellow-500 text-yellow-500 mr-1" />
-                        <span className="text-white font-semibold">{model.rating}</span>
+                        <span className="text-white font-semibold">
+                          {model.rating}
+                        </span>
                       </div>
-                      <span className="text-neutral-400">({model.reviews} reviews)</span>
+                      <span className="text-neutral-400">
+                        ({model.reviews} reviews)
+                      </span>
                     </div>
                   )}
                 </div>
@@ -539,7 +614,9 @@ export function ModelProfile() {
           {(model.phone || model.email) && (
             <Card className="bg-neutral-900 border-neutral-800">
               <CardContent className="p-6">
-                <h3 className="text-white font-semibold mb-4">Contact Information</h3>
+                <h3 className="text-white font-semibold mb-4">
+                  Contact Information
+                </h3>
                 <div className="space-y-3">
                   {model.phone && (
                     <div className="flex items-center text-neutral-300">

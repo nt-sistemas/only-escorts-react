@@ -7,11 +7,22 @@ import {
   type LucideIcon,
   UserX,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card.js";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../../components/ui/card.js";
 import { Badge } from "../../components/ui/badge.js";
 
 type StatusStat = {
-  title: "ACTIVE" | "PROCESSING" | "INACTIVE" | "CANCELED" | "PAST_DUE" | "UNPAID";
+  title:
+    | "ACTIVE"
+    | "PROCESSING"
+    | "INACTIVE"
+    | "CANCELED"
+    | "PAST_DUE"
+    | "UNPAID";
   value: string;
   change: string;
   positive: boolean;
@@ -133,14 +144,19 @@ export function AdminDashboard() {
     <div className="space-y-8">
       <div>
         <h1 className="mb-2 text-3xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground">Overview of the Only Escorts Intim platform</p>
+        <p className="text-muted-foreground">
+          Overview of the Only Escorts Intim platform
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {USER_STATUS_TOTALS.map((stat) => {
           const Icon = stat.icon;
           return (
-            <Card key={stat.title} className="border-border/80 bg-card/90 shadow-sm">
+            <Card
+              key={stat.title}
+              className="border-border/80 bg-card/90 shadow-sm"
+            >
               <CardContent className="p-6">
                 <div className="mb-4 flex items-center justify-between">
                   <Icon className="h-8 w-8 text-pink-500" />
@@ -155,8 +171,12 @@ export function AdminDashboard() {
                     {stat.change}
                   </Badge>
                 </div>
-                <p className="mb-1 text-sm text-muted-foreground">Status {stat.title}</p>
-                <p className="font-highlight text-2xl font-bold tracking-tight text-foreground">{stat.value}</p>
+                <p className="mb-1 text-sm text-muted-foreground">
+                  Status {stat.title}
+                </p>
+                <p className="font-highlight text-2xl font-bold tracking-tight text-foreground">
+                  {stat.value}
+                </p>
               </CardContent>
             </Card>
           );
@@ -176,8 +196,12 @@ export function AdminDashboard() {
                   className="flex items-start justify-between border-b border-border/70 pb-4 last:border-0 last:pb-0"
                 >
                   <div className="flex-1">
-                    <p className="mb-1 font-medium text-foreground">{activity.user}</p>
-                    <p className="text-sm text-muted-foreground">{activity.action}</p>
+                    <p className="mb-1 font-medium text-foreground">
+                      {activity.user}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {activity.action}
+                    </p>
                   </div>
                   <div className="flex flex-col items-end">
                     <Badge
@@ -192,7 +216,9 @@ export function AdminDashboard() {
                     >
                       {activity.type}
                     </Badge>
-                    <span className="mt-1 text-xs text-muted-foreground">{activity.time}</span>
+                    <span className="mt-1 text-xs text-muted-foreground">
+                      {activity.time}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -216,11 +242,17 @@ export function AdminDashboard() {
                       {index + 1}
                     </div>
                     <div>
-                      <p className="font-medium text-foreground">{model.name}</p>
-                      <p className="text-sm text-muted-foreground">{model.views} views</p>
+                      <p className="font-medium text-foreground">
+                        {model.name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {model.views} views
+                      </p>
                     </div>
                   </div>
-                  <p className="font-highlight font-bold tracking-tight text-pink-500">{model.revenue}</p>
+                  <p className="font-highlight font-bold tracking-tight text-pink-500">
+                    {model.revenue}
+                  </p>
                 </div>
               ))}
             </div>

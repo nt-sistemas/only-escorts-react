@@ -3,8 +3,20 @@ import { Link, useNavigate, useSearchParams } from "react-router";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
 import { Checkbox } from "../components/ui/checkbox";
 import { setAuthSession } from "../auth/session";
 import { registerWithApi } from "../services/auth.js";
@@ -88,14 +100,18 @@ export function Register() {
       <div className="w-full max-w-2xl">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="mb-2 font-display text-4xl text-primary">Only Escorts Intim</h1>
+          <h1 className="mb-2 font-display text-4xl text-primary">
+            Only Escorts Intim
+          </h1>
           <p className="text-muted-foreground">Sign up as a Companion</p>
         </div>
 
         {/* Register Card */}
         <Card className="border-border bg-card shadow-lg shadow-primary/10">
           <CardHeader>
-            <CardTitle className="font-display text-foreground">Create Account</CardTitle>
+            <CardTitle className="font-display text-foreground">
+              Create Account
+            </CardTitle>
             <CardDescription className="text-muted-foreground">
               Fill in the details below to create your account
             </CardDescription>
@@ -104,39 +120,55 @@ export function Register() {
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-foreground">Full Name</Label>
+                  <Label htmlFor="name" className="text-foreground">
+                    Full Name
+                  </Label>
                   <Input
                     id="name"
                     type="text"
                     placeholder="Your name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className="border-border bg-input-background text-foreground placeholder:text-muted-foreground"
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-foreground">Email</Label>
+                  <Label htmlFor="email" className="text-foreground">
+                    Email
+                  </Label>
                   <Input
                     id="email"
                     type="email"
                     placeholder="you@example.com"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     className="border-border bg-input-background text-foreground placeholder:text-muted-foreground"
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="plan" className="text-foreground">Plan</Label>
+                  <Label htmlFor="plan" className="text-foreground">
+                    Plan
+                  </Label>
                   <Select
                     value={selectedPlanId || "none"}
-                    onValueChange={(value) => setSelectedPlanId(value === "none" ? "" : value)}
+                    onValueChange={(value) =>
+                      setSelectedPlanId(value === "none" ? "" : value)
+                    }
                   >
                     <SelectTrigger className="border-border bg-input-background text-foreground">
-                      <SelectValue placeholder={isLoadingPlans ? "Loading plans..." : "Select a plan"} />
+                      <SelectValue
+                        placeholder={
+                          isLoadingPlans ? "Loading plans..." : "Select a plan"
+                        }
+                      />
                     </SelectTrigger>
                     <SelectContent className="border-border bg-popover text-popover-foreground">
                       <SelectItem value="none">No plan</SelectItem>
@@ -145,34 +177,48 @@ export function Register() {
                           {plan.name}
                         </SelectItem>
                       ))}
-                      {selectedPlanId && !plans.some((plan) => plan.id === selectedPlanId) && (
-                        <SelectItem value={selectedPlanId}>Selected ({selectedPlanId})</SelectItem>
-                      )}
+                      {selectedPlanId &&
+                        !plans.some((plan) => plan.id === selectedPlanId) && (
+                          <SelectItem value={selectedPlanId}>
+                            Selected ({selectedPlanId})
+                          </SelectItem>
+                        )}
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-foreground">Password</Label>
+                  <Label htmlFor="password" className="text-foreground">
+                    Password
+                  </Label>
                   <Input
                     id="password"
                     type="password"
                     placeholder="••••••••"
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                     className="border-border bg-input-background text-foreground placeholder:text-muted-foreground"
                     required
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-foreground">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword" className="text-foreground">
+                    Confirm Password
+                  </Label>
                   <Input
                     id="confirmPassword"
                     type="password"
                     placeholder="••••••••"
                     value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                     className="border-border bg-input-background text-foreground placeholder:text-muted-foreground"
                     required
                   />
@@ -183,7 +229,9 @@ export function Register() {
                 <Checkbox
                   id="terms"
                   checked={formData.terms}
-                  onCheckedChange={(checked) => setFormData({ ...formData, terms: checked as boolean })}
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, terms: checked as boolean })
+                  }
                   className="border-border data-[state=checked]:border-primary data-[state=checked]:bg-primary"
                 />
                 <label
@@ -217,7 +265,10 @@ export function Register() {
             <div className="mt-6 text-center">
               <p className="text-sm text-muted-foreground">
                 Already have an account?{" "}
-                <Link to="/login" className="font-highlight text-primary hover:text-primary/80">
+                <Link
+                  to="/login"
+                  className="font-highlight text-primary hover:text-primary/80"
+                >
                   Sign In
                 </Link>
               </p>
