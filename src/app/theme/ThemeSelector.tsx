@@ -11,7 +11,7 @@ export function ThemeSelector() {
   ] as const;
 
   return (
-    <div className="fixed right-4 top-4 z-50 rounded-full border border-border/80 bg-background/88 p-1 shadow-lg shadow-black/10 backdrop-blur supports-[backdrop-filter]:bg-background/72">
+    <div className="fixed right-4 top-20 z-50 rounded-full border border-border/80 bg-background/88 p-1 shadow-lg shadow-black/10 backdrop-blur supports-[backdrop-filter]:bg-background/72 md:top-4">
       <div
         className="flex items-center gap-1"
         role="tablist"
@@ -36,7 +36,7 @@ export function ThemeSelector() {
               )}
             >
               <Icon className="h-4 w-4" />
-              <span>{option.label}</span>
+              <span className="hidden sm:inline">{option.label}</span>
             </button>
           );
         })}

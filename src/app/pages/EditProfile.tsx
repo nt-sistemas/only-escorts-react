@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLoading } from "../context/LoadingContext";
 import {
   Upload,
   X,
@@ -16,6 +17,7 @@ import {
   Trash2,
   AlertTriangle,
   Star,
+  Loader2,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -45,6 +47,7 @@ import { Badge } from "../components/ui/badge";
 import { StoriesViewer } from "../components/stories";
 import type { StorySlide } from "../components/stories";
 import { WatermarkedImage } from "../components/ui/watermarked-image";
+import { Skeleton } from "../components/ui/skeleton";
 import { listCategoryOptions, listGenderOptions } from "../services/lookups.js";
 import {
   uploadProfileImages,
@@ -150,6 +153,14 @@ export function EditProfile() {
   const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadNotice, setUploadNotice] = useState<string | null>(null);
+  const [loadedImageUrls, setLoadedImageUrls] = useState<Set<string>>(
+    new Set(),
+  );
+  const { startLoading, stopLoading } = useLoading();
+
+  const markImageLoaded = (url: string) => {
+    setLoadedImageUrls((prev) => new Set(prev).add(url));
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -202,6 +213,7 @@ export function EditProfile() {
     }
 
     setIsUploading(true);
+    startLoading();
     setUploadNotice(null);
 
     try {
@@ -216,6 +228,7 @@ export function EditProfile() {
       );
     } finally {
       setIsUploading(false);
+      stopLoading();
     }
   };
 
@@ -225,6 +238,7 @@ export function EditProfile() {
     }
 
     setIsUploading(true);
+    startLoading();
     setUploadNotice(null);
 
     try {
@@ -239,6 +253,7 @@ export function EditProfile() {
       );
     } finally {
       setIsUploading(false);
+      stopLoading();
     }
   };
 
@@ -265,6 +280,7 @@ export function EditProfile() {
     }
 
     setIsUploading(true);
+    startLoading();
     setUploadNotice(null);
 
     try {
@@ -292,6 +308,7 @@ export function EditProfile() {
       );
     } finally {
       setIsUploading(false);
+      stopLoading();
     }
   };
 
@@ -328,6 +345,7 @@ export function EditProfile() {
     }));
 
     setIsUploading(true);
+    startLoading();
     setUploadNotice(null);
 
     try {
@@ -354,6 +372,7 @@ export function EditProfile() {
       );
     } finally {
       setIsUploading(false);
+      stopLoading();
     }
   };
 
@@ -424,7 +443,14 @@ export function EditProfile() {
           </Button>
         </div>
 
-        {uploadNotice && (
+        {isUploading && (
+          <div className="mb-4 flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary">
+            <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+            Uploading your file to the server, please wait…
+          </div>
+        )}
+
+        {uploadNotice && !isUploading && (
           <div className="mb-4 rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
             {uploadNotice}
           </div>
@@ -759,10 +785,18 @@ export function EditProfile() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <label className="block cursor-pointer rounded-lg border-2 border-dashed border-border p-8 text-center transition hover:border-primary">
-                  <Upload className="w-12 h-12 mx-auto mb-4 text-neutral-500" />
+                <label
+                  className={`relative block rounded-lg border-2 border-dashed border-border p-8 text-center transition hover:border-primary ${
+                    isUploading ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+                  }`}
+                >
+                  {isUploading ? (
+                    <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-primary" />
+                  ) : (
+                    <Upload className="w-12 h-12 mx-auto mb-4 text-neutral-500" />
+                  )}
                   <p className="text-muted-foreground mb-2">
-                    Click to upload or drag your photos here
+                    {isUploading ? "Uploading…" : "Click to upload or drag your photos here"}
                   </p>
                   <p className="text-muted-foreground/80 text-sm">
                     PNG, JPG up to 10MB
@@ -782,11 +816,15 @@ export function EditProfile() {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {gallery.map((photo, index) => (
                     <div key={index} className="relative group aspect-square">
+                      {!loadedImageUrls.has(photo) && (
+                        <Skeleton className="absolute inset-0 rounded-lg" />
+                      )}
                       <WatermarkedImage
                         src={photo}
                         alt={`Photo ${index + 1}`}
-                        className="w-full h-full object-cover rounded-lg"
+                        className={`w-full h-full object-cover rounded-lg transition-opacity ${loadedImageUrls.has(photo) ? "opacity-100" : "opacity-0"}`}
                         containerClassName="w-full h-full rounded-lg"
+                        onLoad={() => markImageLoaded(photo)}
                       />
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition rounded-lg flex items-center justify-center">
                         <Button
@@ -829,10 +867,18 @@ export function EditProfile() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <label className="block cursor-pointer rounded-lg border-2 border-dashed border-border p-8 text-center transition hover:border-primary">
-                  <Upload className="mx-auto mb-4 h-12 w-12 text-neutral-500" />
+                <label
+                  className={`relative block rounded-lg border-2 border-dashed border-border p-8 text-center transition hover:border-primary ${
+                    isUploading ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+                  }`}
+                >
+                  {isUploading ? (
+                    <Loader2 className="mx-auto mb-4 h-12 w-12 animate-spin text-primary" />
+                  ) : (
+                    <Upload className="mx-auto mb-4 h-12 w-12 text-neutral-500" />
+                  )}
                   <p className="mb-2 text-muted-foreground">
-                    Click to upload videos
+                    {isUploading ? "Uploading…" : "Click to upload videos"}
                   </p>
                   <p className="text-sm text-muted-foreground/80">
                     MP4, WebM up to 50MB
@@ -902,6 +948,12 @@ export function EditProfile() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
+                {isUploading && (
+                  <div className="flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary">
+                    <Loader2 className="h-4 w-4 animate-spin shrink-0" />
+                    Uploading your file, please wait…
+                  </div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-3 rounded-xl border border-border p-4">
                     <div>
@@ -1324,10 +1376,18 @@ export function EditProfile() {
                     </h3>
 
                     {/* Upload area */}
-                    <label className="block cursor-pointer rounded-lg border-2 border-dashed border-border p-6 text-center transition hover:border-primary">
-                      <Upload className="w-8 h-8 mx-auto mb-2 text-neutral-500" />
+                    <label
+                      className={`relative block rounded-lg border-2 border-dashed border-border p-6 text-center transition hover:border-primary ${
+                        isUploading ? "cursor-not-allowed opacity-70" : "cursor-pointer"
+                      }`}
+                    >
+                      {isUploading ? (
+                        <Loader2 className="w-8 h-8 mx-auto mb-2 animate-spin text-primary" />
+                      ) : (
+                        <Upload className="w-8 h-8 mx-auto mb-2 text-neutral-500" />
+                      )}
                       <p className="text-muted-foreground text-sm mb-1">
-                        Click to upload or drag an image here
+                        {isUploading ? "Uploading…" : "Click to upload or drag an image here"}
                       </p>
                       <p className="text-muted-foreground/80 text-xs">
                         PNG, JPG up to 10MB

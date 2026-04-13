@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useLoading } from "../context/LoadingContext";
 import { Search, MapPin, Heart } from "lucide-react";
 import { Input } from "../components/ui/input";
 import {
@@ -31,12 +32,12 @@ const MOCK_STORIES: Story[] = [];
 
 export function Models() {
   const navigate = useNavigate();
+  const { startLoading, stopLoading } = useLoading();
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [genderFilter, setGenderFilter] = useState("all");
   const [cityFilter, setCityFilter] = useState("all");
   const [models, setModels] = useState<CatalogModel[]>([]);
-  const [isLoadingModels, setIsLoadingModels] = useState(false);
   const [modelsNotice, setModelsNotice] = useState<string | null>(null);
   const [categoryOptions, setCategoryOptions] = useState<string[]>(
     DEFAULT_CATEGORY_OPTIONS,
@@ -51,7 +52,7 @@ export function Models() {
     let cancelled = false;
 
     const fetchModels = async () => {
-      setIsLoadingModels(true);
+      startLoading();
 
       try {
         const [apiModels, apiCategories, apiGenders, apiStories] =
@@ -89,7 +90,7 @@ export function Models() {
         setModelsNotice("Could not reach API.");
       } finally {
         if (!cancelled) {
-          setIsLoadingModels(false);
+          stopLoading();
         }
       }
     };
@@ -241,11 +242,6 @@ export function Models() {
           {filteredModels.length}{" "}
           {filteredModels.length === 1 ? "model found" : "models found"}
         </p>
-        {isLoadingModels && (
-          <p className="text-neutral-500 text-sm mt-1">
-            Loading models from API...
-          </p>
-        )}
         {modelsNotice && (
           <p className="text-neutral-500 text-sm mt-1">{modelsNotice}</p>
         )}

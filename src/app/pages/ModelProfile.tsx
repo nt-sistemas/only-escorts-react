@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
+import { useLoading } from "../context/LoadingContext";
 import {
   MapPin,
   Phone,
@@ -35,6 +36,7 @@ import {
 export function ModelProfile() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { startLoading, stopLoading } = useLoading();
   const [model, setModel] = useState<ProfileModelData | null>(null);
   const [selectedMainImage, setSelectedMainImage] = useState("");
   const [profileNotice, setProfileNotice] = useState<string | null>(null);
@@ -58,6 +60,7 @@ export function ModelProfile() {
     let cancelled = false;
 
     const fetchProfile = async () => {
+      startLoading();
       try {
         const apiProfile = await getModelProfileById(id);
         if (cancelled) {
@@ -115,6 +118,10 @@ export function ModelProfile() {
           setModel(null);
           setSelectedMainImage("");
           setProfileNotice("Could not load profile from API.");
+        }
+      } finally {
+        if (!cancelled) {
+          stopLoading();
         }
       }
     };
