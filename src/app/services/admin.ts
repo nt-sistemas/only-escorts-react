@@ -461,10 +461,11 @@ export async function getAdminDashboardData(): Promise<DashboardData> {
           ? card.value
           : 0,
       subtitle: typeof card.subtitle === "string" ? card.subtitle : undefined,
-      trendDirection:
-        card.trendDirection === "up" || card.trendDirection === "down"
-          ? card.trendDirection
-          : "neutral",
+      trendDirection: (card.trendDirection === "up" ||
+      card.trendDirection === "down" ||
+      card.trendDirection === "neutral"
+        ? card.trendDirection
+        : "neutral") as DashboardCard["trendDirection"],
       trendValue: typeof card.trendValue === "number" ? card.trendValue : 0,
       cardVariant: card.cardVariant ?? "default",
       statusColor: card.statusColor ?? "gray",

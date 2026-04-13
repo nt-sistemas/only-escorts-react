@@ -336,7 +336,7 @@ export function AdminDashboard() {
 
           return (
             <Card
-              key={dashCard.title}
+              key={dashCard.key}
               className={`border-border/80 shadow-sm ${variantClass}`}
             >
               <CardContent className="p-6">
