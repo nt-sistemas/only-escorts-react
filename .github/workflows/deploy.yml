@@ -74,7 +74,16 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            cd /var/www/only-escorts-intim/front
+            set -e
+            REPO_PATH="/var/www/only-escorts-intim/front"
+            DIST_PATH="$REPO_PATH/dist"
+            FRONT_PATH="${{ secrets.FRONT_PATH }}"
+
+            if [ -z "$FRONT_PATH" ]; then
+              FRONT_PATH="$DIST_PATH"
+            fi
+
+            cd "$REPO_PATH"
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             nvm install 22
@@ -82,3 +91,9 @@ jobs:
             git pull origin main
             npm ci
             npm run build
+
+            if [ "$FRONT_PATH" != "$DIST_PATH" ]; then
+              mkdir -p "$FRONT_PATH"
+              rm -rf "$FRONT_PATH"/*
+              cp -R "$DIST_PATH/." "$FRONT_PATH/"
+            fi
