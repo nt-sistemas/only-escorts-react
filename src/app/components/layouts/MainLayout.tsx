@@ -1,5 +1,5 @@
 import { Outlet, Link, useNavigate } from "react-router";
-import { LogOut, Edit } from "lucide-react";
+import { LogOut, Edit, LogIn } from "lucide-react";
 import { Button } from "../ui/button";
 import OnlyLogo from "../../assets/img/logo.svg";
 import { clearAuthSession, getAuthSession, hasRole } from "../../auth/session";
@@ -51,6 +51,17 @@ export function MainLayout() {
           </nav>
 
           <div className="flex items-center gap-3">
+            {!isAuthenticated && (
+              <Button
+                onClick={() => navigate("/login")}
+                variant="ghost"
+                size="sm"
+                className="text-primary-foreground/85 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+              >
+                <LogIn className="w-4 h-4 mr-2" />
+                Login
+              </Button>
+            )}
             {isUser && (
               <Button
                 onClick={() => navigate("/edit-profile")}
