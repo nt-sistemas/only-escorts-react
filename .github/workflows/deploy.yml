@@ -72,7 +72,6 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
           port: ${{ secrets.VPS_PORT }}
-          key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             set -e
             REPO_PATH="/var/www/only-escorts-intim/front"
@@ -88,7 +87,22 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             nvm install 22
             nvm use 22
-            git pull origin main
+
+            # Preserve local server env file before syncing repository state.
+            ENV_BACKUP=""
+            if [ -f "$REPO_PATH/.env" ]; then
+              ENV_BACKUP="$(mktemp)"
+              cp "$REPO_PATH/.env" "$ENV_BACKUP"
+            fi
+
+            git fetch origin main
+            git reset --hard origin/main
+
+            if [ -n "$ENV_BACKUP" ] && [ -f "$ENV_BACKUP" ]; then
+              cp "$ENV_BACKUP" "$REPO_PATH/.env"
+              rm -f "$ENV_BACKUP"
+            fi
+
             npm ci
             npm run build
 
