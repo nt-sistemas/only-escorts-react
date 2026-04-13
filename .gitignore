@@ -21,3 +21,4 @@ coverage
 *.gz
 *.zip
 *.tar   
+.env

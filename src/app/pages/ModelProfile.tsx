@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useLoading } from "../context/LoadingContext";
 import {
@@ -10,8 +10,9 @@ import {
   Clock,
   Heart,
   Share2,
-  MessageCircle,
   Video,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -38,7 +39,7 @@ export function ModelProfile() {
   const navigate = useNavigate();
   const { startLoading, stopLoading } = useLoading();
   const [model, setModel] = useState<ProfileModelData | null>(null);
-  const [selectedMainImage, setSelectedMainImage] = useState("");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [profileNotice, setProfileNotice] = useState<string | null>(null);
   const session = getAuthSession();
   const [testimonialName, setTestimonialName] = useState("");
@@ -69,7 +70,7 @@ export function ModelProfile() {
 
         if (!apiProfile.id || !apiProfile.name || !apiProfile.image) {
           setModel(null);
-          setSelectedMainImage("");
+          setCurrentImageIndex(0);
           setProfileNotice("Model data is incomplete.");
           return;
         }
@@ -111,12 +112,12 @@ export function ModelProfile() {
         };
 
         setModel(nextModel);
-        setSelectedMainImage(apiProfile.image);
+        setCurrentImageIndex(0);
         setProfileNotice(null);
       } catch {
         if (!cancelled) {
           setModel(null);
-          setSelectedMainImage("");
+          setCurrentImageIndex(0);
           setProfileNotice("Could not load profile from API.");
         }
       } finally {
@@ -201,6 +202,45 @@ export function ModelProfile() {
     }
   };
 
+  const carouselImages = useMemo(() => {
+    if (!model) {
+      return [];
+    }
+
+    return Array.from(
+      new Set(
+        [model.image, ...model.gallery].filter(
+          (image): image is string =>
+            Boolean(image && image.trim().length > 0),
+        ),
+      ),
+    );
+  }, [model]);
+
+  useEffect(() => {
+    if (carouselImages.length <= 1) {
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length);
+    }, 5000);
+
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [carouselImages.length]);
+
+  const selectedMainImage = carouselImages[currentImageIndex] ?? "";
+  const goToPreviousImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? carouselImages.length - 1 : prev - 1,
+    );
+  };
+  const goToNextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % carouselImages.length);
+  };
+
   if (!model) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -246,6 +286,28 @@ export function ModelProfile() {
                 className="w-full h-full object-cover"
                 containerClassName="w-full h-full"
               />
+              {carouselImages.length > 1 && (
+                <>
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="secondary"
+                    onClick={goToPreviousImage}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 border-0 bg-black/60 text-white hover:bg-black/80"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="secondary"
+                    onClick={goToNextImage}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 border-0 bg-black/60 text-white hover:bg-black/80"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </>
+              )}
               {model.verified && (
                 <Badge className="font-highlight absolute top-4 left-4 border-0 bg-primary text-primary-foreground flex items-center gap-1">
                   <Shield className="w-3 h-3" />
@@ -257,7 +319,7 @@ export function ModelProfile() {
 
           {/* Gallery */}
           <div className="grid grid-cols-3 gap-4">
-            {model.gallery.map((img, index) => (
+            {carouselImages.map((img, index) => (
               <div
                 key={index}
                 className="aspect-square rounded-lg overflow-hidden"
@@ -265,9 +327,13 @@ export function ModelProfile() {
                 <WatermarkedImage
                   src={img}
                   alt={`Gallery ${index + 1}`}
-                  className="w-full h-full object-cover hover:scale-105 transition cursor-pointer"
+                  className={`w-full h-full object-cover hover:scale-105 transition cursor-pointer ${
+                    index === currentImageIndex
+                      ? "ring-2 ring-pink-500"
+                      : "ring-1 ring-transparent"
+                  }`}
                   containerClassName="w-full h-full"
-                  onClick={() => setSelectedMainImage(img)}
+                  onClick={() => setCurrentImageIndex(index)}
                 />
               </div>
             ))}
@@ -586,18 +652,11 @@ export function ModelProfile() {
               )}
 
               <div className="space-y-3">
-                <Button className="font-highlight w-full bg-primary text-primary-foreground hover:bg-primary/90">
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  Send Message
-                </Button>
                 {model.phone && (
-                  <Button
-                    variant="outline"
-                    className="font-highlight w-full border-border text-foreground hover:bg-accent hover:text-accent-foreground"
-                  >
+                  <div className="font-highlight flex w-full items-center justify-center rounded-md border border-border px-4 py-2 text-foreground">
                     <Phone className="w-4 h-4 mr-2" />
-                    View Phone Number
-                  </Button>
+                    {model.phone}
+                  </div>
                 )}
                 <div className="flex gap-2">
                   <Button

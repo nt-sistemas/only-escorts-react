@@ -61,6 +61,8 @@ type ApiStory = {
 type ApiStoriesResponse = ApiStory[] | { data: ApiStory[] };
 type ApiNamedEntity = { id?: string; name?: string };
 type ApiNamedEntityResponse = ApiNamedEntity[] | { data: ApiNamedEntity[] };
+type ApiCity = { city?: string; count?: number };
+type ApiCityResponse = ApiCity[] | { data: ApiCity[] };
 
 function formatEuroPerHour(price: ApiModel["price"]) {
   if (typeof price === "string") {
@@ -170,6 +172,19 @@ export async function listModelGenders(): Promise<string[]> {
 export async function listModelCategories(): Promise<string[]> {
   const response = await apiGet<ApiNamedEntityResponse>("/get-categories");
   return normalizeNamedEntityList(response);
+}
+
+export async function listModelCities(): Promise<string[]> {
+  const response = await apiGet<ApiCityResponse>("/get-cities");
+  const source = Array.isArray(response) ? response : response.data;
+
+  return Array.from(
+    new Set(
+      source
+        .map((item) => (typeof item.city === "string" ? item.city.trim() : ""))
+        .filter(Boolean),
+    ),
+  );
 }
 
 export async function listModelStories(): Promise<Story[]> {

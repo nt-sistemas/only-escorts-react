@@ -20,6 +20,7 @@ import {
   listModels,
   listModelCategories,
   listModelGenders,
+  listModelCities,
   getModelStoryByProfileId,
   listModelStories,
   type CatalogModel,
@@ -45,6 +46,7 @@ export function Models() {
   const [genderOptions, setGenderOptions] = useState<string[]>(
     DEFAULT_GENDER_OPTIONS,
   );
+  const [cityOptions, setCityOptions] = useState<string[]>([]);
   const [stories, setStories] = useState<Story[]>(MOCK_STORIES);
   const [activeStoryIndex, setActiveStoryIndex] = useState<number | null>(null);
 
@@ -55,11 +57,12 @@ export function Models() {
       startLoading();
 
       try {
-        const [apiModels, apiCategories, apiGenders, apiStories] =
+        const [apiModels, apiCategories, apiGenders, apiCities, apiStories] =
           await Promise.all([
             listModels(),
             listModelCategories(),
             listModelGenders(),
+            listModelCities(),
             listModelStories(),
           ]);
         if (cancelled) {
@@ -71,6 +74,17 @@ export function Models() {
         );
         setGenderOptions(
           apiGenders.length > 0 ? apiGenders : DEFAULT_GENDER_OPTIONS,
+        );
+        setCityOptions(
+          apiCities.length > 0
+            ? apiCities
+            : Array.from(
+                new Set(
+                  apiModels
+                    .map((model) => model.city?.trim() ?? "")
+                    .filter(Boolean),
+                ),
+              ),
         );
 
         setModels(apiModels);
@@ -87,6 +101,7 @@ export function Models() {
         setStories(MOCK_STORIES);
         setCategoryOptions(DEFAULT_CATEGORY_OPTIONS);
         setGenderOptions(DEFAULT_GENDER_OPTIONS);
+        setCityOptions([]);
         setModelsNotice("Could not reach API.");
       } finally {
         if (!cancelled) {
@@ -225,11 +240,11 @@ export function Models() {
               </SelectTrigger>
               <SelectContent className="bg-neutral-800 border-neutral-700">
                 <SelectItem value="all">All Cities</SelectItem>
-                <SelectItem value="São Paulo">São Paulo</SelectItem>
-                <SelectItem value="Rio de Janeiro">Rio de Janeiro</SelectItem>
-                <SelectItem value="Brasília">Brasília</SelectItem>
-                <SelectItem value="Curitiba">Curitiba</SelectItem>
-                <SelectItem value="Porto Alegre">Porto Alegre</SelectItem>
+                {cityOptions.map((city) => (
+                  <SelectItem key={city} value={city}>
+                    {city}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
