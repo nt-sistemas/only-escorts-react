@@ -4,14 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - src/**
-      - public/**
-      - package.json
-      - package-lock.json
-      - vite.config.ts
-      - tsconfig.json
-      - .github/workflows/deploy.yml
   workflow_dispatch:
 
 concurrency:
@@ -19,8 +11,37 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  quality:
+    name: Quality Checks
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm test
+
+  build:
+    name: Build Front
+    runs-on: ubuntu-latest
+    needs: quality
 
     steps:
       - name: Checkout
@@ -39,39 +60,25 @@ jobs:
       - name: Build front
         run: npm run build
 
-      - name: Prepare remote directory
-        uses: appleboy/ssh-action@v1.0.3
+  deploy:
+    name: Deploy Production
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          script_stop: true
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            set -e
-            FRONT_PATH="/var/www/only-escorts-intim/front"
-
-            if [ -z "$FRONT_PATH" ]; then
-              echo "FRONT_PATH secret is required."
-              exit 1
-            fi
-
-
-
-            mkdir -p "$FRONT_PATH"
-            rm -rf "$FRONT_PATH"/*
-
-            cd "$FRONT_PATH"
-            # Create a simple index.html to serve as a placeholder until the files are uploaded
-            echo "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Only Escorts Intim</title></head><body><h1>Deploying...</h1></body></html>" > index.html
-
-      - name: Upload static files
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
-          source: dist/*
-          target: ${{ secrets.FRONT_PATH }}
-          strip_components: 1
+            cd /var/www/only-escorts-intim/front
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            nvm install 22
+            nvm use 22
+            git pull origin main
+            npm ci
+            npm run build
