@@ -363,7 +363,6 @@ export function EditProfile() {
       URL.revokeObjectURL(currentPreview);
     }
 
-    setVerificationFiles((prev) => ({ ...prev, [key]: null }));
     setVerificationPreviews((prev) => ({ ...prev, [key]: "" }));
   };
 
