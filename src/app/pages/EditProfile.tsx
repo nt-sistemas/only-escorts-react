@@ -109,7 +109,7 @@ export function EditProfile() {
   // Stories state
   const [storySlides, setStorySlides] = useState<StorySlide[]>([
     {
-      id: 1,
+      id: "1",
       image:
         "https://images.unsplash.com/photo-1649589244330-09ca58e4fa64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMHBvcnRyYWl0fGVufDF8fHx8MTc3Mjk0MDk5Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       duration: 5000,
@@ -219,7 +219,7 @@ export function EditProfile() {
   const addStorySlide = () => {
     if (!newSlideUrl.trim()) return;
     const slide: StorySlide = {
-      id: nextSlideId,
+      id: String(nextSlideId),
       image: newSlideUrl.trim(),
       duration: Number(newSlideDuration),
     };
@@ -243,7 +243,7 @@ export function EditProfile() {
         setStorySlides((prev) => {
           const startingId = nextSlideId;
           const uploadedSlides = urls.map((url, index) => ({
-            id: startingId + index,
+            id: String(startingId + index),
             image: url,
             duration: 5000,
           }));
@@ -262,7 +262,7 @@ export function EditProfile() {
     }
   };
 
-  const removeStorySlide = (id: number) => {
+  const removeStorySlide = (id: StorySlide["id"]) => {
     setStorySlides((prev) => prev.filter((s) => s.id !== id));
   };
 
@@ -274,7 +274,7 @@ export function EditProfile() {
     setStorySlides(next);
   };
 
-  const updateSlideDuration = (id: number, duration: number) => {
+  const updateSlideDuration = (id: StorySlide["id"], duration: number) => {
     setStorySlides((prev) =>
       prev.map((s) => (s.id === id ? { ...s, duration } : s))
     );
@@ -1240,8 +1240,8 @@ export function EditProfile() {
               <StoriesViewer
                 stories={[
                   {
-                    id: 0,
-                    userId: 0,
+                    id: "0",
+                    userId: "0",
                     userName: profileData.name,
                     userImage: gallery[0] ?? "",
                     slides: storySlides,

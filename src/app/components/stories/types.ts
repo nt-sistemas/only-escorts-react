@@ -1,7 +1,7 @@
 export interface StorySlide {
   id: string;
   image: string;
-  duration?: number; // ms, default 5000
+  duration: number;
 }
 
 export interface Story {
