@@ -1,5 +1,87 @@
 import { apiDelete, apiGet, apiPost, apiPut } from "../lib/api.js";
 
+// Dashboard types matching backend API
+export type DashboardCardVariant =
+  | "default"
+  | "success"
+  | "warning"
+  | "destructive"
+  | "secondary";
+export type DashboardStatusColor =
+  | "green"
+  | "red"
+  | "yellow"
+  | "blue"
+  | "purple"
+  | "gray";
+export type DashboardIconType =
+  | "user"
+  | "check_circle"
+  | "clock"
+  | "x_circle"
+  | "alert_triangle"
+  | "dollar_sign"
+  | "mail"
+  | "trending_up"
+  | "trending_down";
+
+export type UserStatusCard = {
+  count: number;
+  status:
+    | "ACTIVE"
+    | "PROCESSING"
+    | "INACTIVE"
+    | "CANCELED"
+    | "PAST_DUE"
+    | "UNPAID"
+    | "VALIDATED";
+  statusColor: DashboardStatusColor;
+  cardVariant: DashboardCardVariant;
+  icon: DashboardIconType;
+  priority: number;
+};
+
+export type DashboardMetrics = {
+  totalUsers: number;
+  totalWebhookEvents: number;
+  webhooksProcessedToday: number;
+  avgResponseTime: string;
+};
+
+export type WebhookEvent = {
+  eventType: string;
+  count: number;
+  percentage: number;
+};
+
+export type WebhookBlock = {
+  topEvents: WebhookEvent[];
+  failedWebhooks: number;
+  recentWebhooks: number;
+};
+
+export type DashboardCard = {
+  title: string;
+  description: string;
+  value: string | number;
+  cardVariant: DashboardCardVariant;
+  statusColor: DashboardStatusColor;
+  icon: DashboardIconType;
+  priority: number;
+  trend?: {
+    percentage: number;
+    direction: "up" | "down";
+  };
+};
+
+export type DashboardData = {
+  userStatusCards: UserStatusCard[];
+  metrics: DashboardMetrics;
+  webhookBlock: WebhookBlock;
+  dashboardCards: DashboardCard[];
+};
+
+// Legacy types for backward compatibility
 export type DashboardStat = {
   title: string;
   value: string;
@@ -195,14 +277,9 @@ function normalizeNamedEntity(
   };
 }
 
-export async function getAdminDashboardData() {
-  const response = await apiGet<
-    ApiDataResponse<{
-      stats: DashboardStat[];
-      recentActivities: RecentActivity[];
-      topModels: TopModel[];
-    }>
-  >("/admin/dashboard");
+export async function getAdminDashboardData(): Promise<DashboardData> {
+  const response =
+    await apiGet<ApiDataResponse<DashboardData>>("/admin/dashboard");
   return "data" in response ? response.data : response;
 }
 
